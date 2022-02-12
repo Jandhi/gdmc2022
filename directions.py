@@ -10,6 +10,10 @@ class Direction:
     y_minus = 'y_minus'
     z_plus = 'z_plus'
     z_minus = 'z_minus'
+    z_plus_x_plus = 'z_plus_x_plus'
+    z_plus_x_minus = 'z_plus_x_minus'
+    z_minus_x_plus = 'z_minus_x_plus'
+    z_minus_x_minus = 'z_minus_x_minus'
 
     north = z_minus
     east = x_plus
@@ -17,6 +21,10 @@ class Direction:
     west = x_minus
     up = y_plus
     down = y_minus
+    northwest = z_minus_x_minus
+    northeast = z_minus_x_plus
+    southwest = z_plus_x_plus
+    southeast= z_plus_x_minus
 
     cardinal = (north, east, south, west)
 
@@ -26,7 +34,12 @@ class Direction:
         y_plus : y_minus,
         y_minus : y_plus,
         z_plus : z_minus,
-        z_minus : z_plus
+        z_minus : z_plus,
+        z_minus_x_minus : z_plus_x_plus,
+        z_minus_x_plus : z_plus_x_minus,
+        z_plus_x_plus : z_minus_x_minus,
+        z_plus_x_minus : z_minus_x_plus
+        
     }
 
     vectors = {
@@ -35,7 +48,11 @@ class Direction:
         y_plus : (0, 1, 0),
         y_minus : (0, -1, 0),
         z_plus : (0, 0, 1),
-        z_minus : (0, 0, -1)
+        z_minus : (0, 0, -1),
+        z_minus_x_minus : (-1, 0, -1),
+        z_minus_x_plus : (1, 0, -1),
+        z_plus_x_plus : (1, 0, 1),
+        z_plus_x_minus : (-1, 0, 1)
     }
 
     stairs = {
