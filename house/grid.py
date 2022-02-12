@@ -1,5 +1,8 @@
+from pickle import TRUE
 from directions import Direction
 from vector import sum_vectors
+from random import seed
+from random import randint
 
 class GridNode:
     def __init__(self, x, y, z, grid) -> None:
@@ -31,6 +34,28 @@ class GridNode:
                 nodes.append(self.grid.nodes[(x, y, z)])
         
         return nodes
+
+
+    #Check if the GridNode has neighbours to its diagonals in the same plane
+    def has_diagonal_neighbours(self):
+        for dx, dy, dz in [(-1, 0, -1), (-1, 0, 1),(1, 0, 1), (1, 0, -1)]:
+            x = self.x + dx
+            y = self.y + dy
+            z = self.z + dz
+            if (x, y, z) in self.grid.nodes:
+                return True
+        return False
+
+    #Check if the GridNode has diagonal neighbours that are not connected to the same 'building'
+    def has_disconnected_diagonal_neighbours(self):
+        for dx, dy, dz in [(-1, 0, -1), (-1, 0, 1),(1, 0, 1), (1, 0, -1)]:
+            x = self.x + dx
+            y = self.y + dy
+            z = self.z + dz
+            if (x, y, z) in self.grid.nodes:
+                if not ((x - dx, y, z) in self.grid.nodes or (x, y, z - dz) in self.grid.nodes):
+                    return True
+        return False
 
     def get_origin(self) -> tuple[int, int, int]:
         x, y, z = self.grid.origin
@@ -79,3 +104,22 @@ class Grid:
 
     def add_node(self, x, y, z) -> GridNode:
         self.nodes[(x, y, z)] = GridNode(x, y, z, self)
+
+    #generate num random nodes, nodes cannot be diagonal 
+    def add_random_node(self, num, limit_x, limit_y, limit_z):
+        seed()
+        for a in range(num):
+            x = randint(0, limit_x)
+            y = randint(0, limit_y)
+            z = randint(0, limit_z)
+            new_node = GridNode(x, y, z, self)
+            if (x,y,z) in self.nodes: #duplicate check
+                #do something
+                print("duplicate")
+            elif new_node.has_disconnected_diagonal_neighbours() == True: 
+                print("")
+            elif y>0:
+                if new_node.get_neighbour('y_minus') != None:
+                    self.nodes[(x, y, z)] = new_node   
+            else:
+                self.nodes[(x, y, z)] = new_node
