@@ -1,0 +1,27 @@
+from noise.random import hash, get_seed
+from threading import Lock
+
+# deterministic random number generator with state, built to be thread safe
+# I'd recommend sticking to random.py when we can, but this is an alternative
+class RandomNumberGenerator:
+    def __init__(self, initial_seed = get_seed()) -> None:
+        self._seed = initial_seed
+        self.lock = Lock()
+    
+    def rand_int(self, min : int = 0, max : int = None) -> int:
+        self.lock.acquire() # for thread safety
+        num = hash(self.get_seed(), 0)
+        self.lock.release()
+
+        if max:
+            return min + num % (max - min)
+        else:
+            return min + num 
+    
+    def get_seed(self) -> int:
+        seed = self._seed
+        self.update_seed()
+        return seed
+    
+    def update_seed(self) -> None:
+        self._seed = hash(self._seed, self._seed)
