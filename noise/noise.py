@@ -4,7 +4,7 @@ BITNOISE3 = 0x1859c4e9
 BITNOISE4 = 0x0c1fc20b
 
 # returns true or false based on successes to total odds
-def odds(seed, successes, total):
+def odds(seed, successes, total) -> bool:
     return hash(BITNOISE4, seed) % total < successes
 
 # test function for above
@@ -22,7 +22,7 @@ def test_odds(seed, trials, successes, total):
     print("True odds: %", trial_percent)
 
 # recursive hash function with any amount of inputs
-def recursive_hash(seed, *args):
+def recursive_hash(seed, *args) -> int:
     noise = seed
 
     for pos in args:
@@ -31,11 +31,11 @@ def recursive_hash(seed, *args):
     return noise
 
 # hashes vector using recursive hash
-def hash_vector(seed, vector):
+def hash_vector(seed, vector) -> int:
     return recursive_hash(seed, *vector)
 
 # hashes together a seed and a position
-def hash(seed, pos):
+def hash(seed, pos) -> int:
     noise = pos
     noise = noise * BITNOISE1
     noise = noise + seed
