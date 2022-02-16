@@ -35,4 +35,3 @@ def recursive_hash(seed, *args) -> int:
 # hashes vector using recursive hash
 def hash_vector(seed, vector) -> int:
     return recursive_hash(seed, *vector)
-
