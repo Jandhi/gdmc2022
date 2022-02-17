@@ -5,7 +5,7 @@ from threading import Lock
 # I'd recommend sticking to random.py when we can, but this is an alternative
 class RandomNumberGenerator:
     def __init__(self, initial_seed = get_seed()) -> None:
-        self._seed = initial_seed
+        self.__seed = initial_seed
         self.lock = Lock()
     
     def rand_int(self, min : int = 0, max : int = None) -> int:
@@ -19,9 +19,9 @@ class RandomNumberGenerator:
             return min + num 
     
     def get_seed(self) -> int:
-        seed = self._seed
+        seed = self.__seed
         self.update_seed()
         return seed
     
     def update_seed(self) -> None:
-        self._seed = hash(self._seed, self._seed)
+        self.__seed = hash(self.__seed, self.__seed)

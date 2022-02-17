@@ -7,13 +7,13 @@ area = (0, 0, 128, 128)  # default build area
 worldSlice = WorldSlice(area)
 heightmap = mapUtils.calcGoodHeightmap(worldSlice)
 
-def heightAt(x, z):
+def heightAt(x : int, z : int):
     """Access height using local coordinates."""
     # Warning:
     # Heightmap coordinates are not equal to world coordinates!
     return heightmap[(x - area[0], z - area[1])]
 
-def setBlock(x, y, z, block):
+def setBlock(x : int, y : int, z : int, block : str):
     """Place blocks or add them to batch."""
     if USE_BATCHING:
         # add block to buffer, send once buffer has 100 items in it

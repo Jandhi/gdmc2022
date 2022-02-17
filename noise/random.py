@@ -25,13 +25,13 @@ def odds(seed, successes, total) -> bool:
     return noise.odds(mix_seed(seed), successes, total)
 
 # hashes together a seed and a position
-def hash(seed, pos) -> int:
-    return noise.hash(mix_seed(seed), pos)
+def hash(pos) -> int:
+    return noise.hash(get_seed(), pos)
 
 # recursive hash function with any amount of inputs
-def recursive_hash(seed, *args) -> int:
-    return noise.recursive_hash(mix_seed(seed), *args)
+def recursive_hash(*args) -> int:
+    return noise.recursive_hash(get_seed(), *args)
 
 # hashes vector using recursive hash
-def hash_vector(seed, vector) -> int:
-    return recursive_hash(seed, *vector)
+def hash_vector(vector) -> int:
+    return recursive_hash(get_seed(), *vector)

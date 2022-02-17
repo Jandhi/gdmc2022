@@ -44,3 +44,23 @@ class Direction:
         south : 'south',
         west : 'west'
     }
+
+    forwards = {
+        north : north,
+        east : east,
+        south : south,
+        west: west
+    }
+    right = {
+        north: east,
+        east: south,
+        south: west,
+        west: north
+    }
+    left = {
+        north: west,
+        west: south,
+        south: east,
+        east: north
+    }
+    backwards = opposite
