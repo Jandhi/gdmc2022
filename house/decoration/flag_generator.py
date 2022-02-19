@@ -1,8 +1,7 @@
 from random import choice, shuffle
-from re import L
 from directions import Direction
 from house.walls.wall_design import BasicWall
-from http_client.interfaceUtils import setBlock
+from tools import setBlock
 from generator import Generator
 from house.grid import Grid, GridNode
 from vector import multiply_vector, sum_vectors
