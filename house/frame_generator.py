@@ -1,7 +1,6 @@
-from re import L
-from http_client.interfaceUtils import setBlock
 from generator import Generator
 from house.grid import Grid, GridNode
+from tools import setBlock
 
 class FrameGenerator(Generator):
     name = 'FrameGenerator'

@@ -1,22 +1,14 @@
-from http_client import interfaceUtils, mapUtils
-from http_client.worldLoader import WorldSlice
+
+from gdpc.interface import Interface
+from gdpc.worldLoader import WorldSlice
 
 USE_BATCHING = True
 
 area = (0, 0, 128, 128)  # default build area
-worldSlice = WorldSlice(area)
-heightmap = mapUtils.calcGoodHeightmap(worldSlice)
+interface = Interface(buffering=True)
 
-def heightAt(x : int, z : int):
-    """Access height using local coordinates."""
-    # Warning:
-    # Heightmap coordinates are not equal to world coordinates!
-    return heightmap[(x - area[0], z - area[1])]
+def setBlock(x, y, z, block):
+    interface.placeBlockBuffered(x, y, z, block)
 
-def setBlock(x : int, y : int, z : int, block : str):
-    """Place blocks or add them to batch."""
-    if USE_BATCHING:
-        # add block to buffer, send once buffer has 100 items in it
-        interfaceUtils.placeBlockBatched(x, y, z, block, 100)
-    else:
-        interfaceUtils.setBlock(x, y, z, block)
+def sendBlocks():
+    interface.sendBlocks()

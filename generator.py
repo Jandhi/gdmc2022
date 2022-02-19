@@ -1,6 +1,6 @@
-from tools import USE_BATCHING
-from http_client import interfaceUtils
 from progress.bar import Bar
+
+from tools import USE_BATCHING, sendBlocks
 
 class Generator():
     name = 'Generator'
@@ -40,7 +40,7 @@ class Generator():
 
         if USE_BATCHING:
         # we need to send any blocks remaining in the buffer
-            interfaceUtils.sendBlocks()
+            sendBlocks()
     
     def __generate__(self2):
         pass
