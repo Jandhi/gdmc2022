@@ -10,6 +10,7 @@ opencv-python = ">=4.4.0.44"
 matplotlib = ">=3.3.2"
 NBT = ">=1.5.0"
 progress = "*"
+gdpc = "*"
 
 [dev-packages]
 

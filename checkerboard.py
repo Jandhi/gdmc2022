@@ -1,4 +1,4 @@
-from tools import area, heightAt, setBlock
+from tools import area, setBlock
 from generator import Generator
 
 class CheckerBoardGenerator(Generator):

@@ -1,5 +1,4 @@
-from re import L
-from http_client.interfaceUtils import setBlock
+from tools import setBlock
 from generator import Generator
 from house.grid import Grid, GridNode
 from directions import Direction
