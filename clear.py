@@ -1,4 +1,3 @@
-from tools import area, setBlock
 from generator import Generator
 
 class Clear(Generator):
@@ -14,7 +13,4 @@ class Clear(Generator):
             for z in range(self.z1, self.z2):
                 self.bar.next()
                 for y in range(self.y, self.height_limit):
-                    setBlock(x, y, z, 'air')
-
-if __name__ == '__main__':
-    Clear(height_limit=50, area=area, y=4).generate()
+                    self.interface.placeBlock(x, y, z, 'air')

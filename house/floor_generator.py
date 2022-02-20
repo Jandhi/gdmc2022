@@ -1,6 +1,5 @@
 from generator import Generator
 from house.grid import Grid, GridNode
-from tools import setBlock
 
 class FloorGenerator(Generator):
     name = 'Floor Generator'
@@ -26,5 +25,5 @@ class FloorGenerator(Generator):
 
         for x in range(x1, x2):
             for z in range(z1, z2):
-                setBlock(x, y0, z, self.block)
+                self.interface.placeBlock(x, y0, z, self.block)
         

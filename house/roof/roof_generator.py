@@ -1,4 +1,3 @@
-from tools import setBlock
 from generator import Generator
 from house.grid import Grid, GridNode
 from directions import Direction
@@ -31,7 +30,7 @@ class RoofGenerator(Generator):
 
         for x in range(x1, x2):
             for z in range(z1, z2):
-                setBlock(x, y0 + node.height - 1, z, self.block)
+                self.interface.placeBlock(x, y0 + node.height - 1, z, self.block)
         
         for direction in Direction.cardinal:
             if not node.get_neighbour(direction):
@@ -48,8 +47,8 @@ class RoofGenerator(Generator):
             if position == 0:
                 block = 'polished_andesite'
             elif position == (len(points) - 1) // 2:
-                block = f'cobblestone_stairs[facing={Direction.stairs[direction]}]'
+                block = f'cobblestone_stairs[facing={Direction.text[direction]}]'
             else:
-                block = f'spruce_stairs[facing={Direction.stairs[direction]}]'
+                block = f'spruce_stairs[facing={Direction.text[direction]}]'
 
-            setBlock(x + x0, y + 1 + y0, z + z0, block)
+            self.interface.placeBlock(x + x0, y + 1 + y0, z + z0, block)

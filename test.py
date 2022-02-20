@@ -7,12 +7,18 @@ from checkerboard import CheckerBoardGenerator
 from house.roof.roof_generator import RoofGenerator
 from house.roof.tower_roof import TowerRoofGenerator
 from house.walls.wall_generator import WallGenerator
-from threading import Thread
-from datetime import datetime
+from gdpc.interface import requestPlayerArea, Interface, setBuildArea
 
 MULTI = True
 
-grid = Grid((0, 3, 0), (15, 15, 15))
+area = list(requestPlayerArea(66, 66))
+area[1] = 3
+area[4] = 200
+setBuildArea(*area)
+
+interface = Interface(area[0], 0, area[2], True)
+
+grid = Grid((1, 3, 1), (5, 7, 5))
 grid.add_node(0, 0, 0)
 grid.add_node(0, 0, 1)
 grid.add_node(1, 0, 0)
@@ -30,29 +36,12 @@ grid.add_node(0, 0, 4)
 grid.add_node(0, 1, 4)
 grid.add_node(1, 0, 4)
 
-start_time = datetime.now()
+Clear(interface=interface, height_limit=32, area=(0, 0, 66, 66), y=4).generate()
+CheckerBoardGenerator(interface=interface, tile_width=grid.width, tile_depth=grid.depth, area=(1, 1, 65, 65), y=3).generate()
 
-Clear(height_limit=32, area=(-1, -1, 64, 64), y=4).generate()
-CheckerBoardGenerator(tile_width=grid.width, tile_depth=grid.depth, area=(0, 0, 64, 64), y=3).generate()
-
-if MULTI:
-    for func in [
-        WallGenerator(grid=grid).generate, 
-        RoofGenerator(grid=grid).generate,
-        FlagGenerator(grid=grid).generate,
-        FloorGenerator(grid=grid).generate,
-        TowerRoofGenerator(node=grid.nodes[(0, 1, 4)],y_offset=grid.height).generate
-    ]:
-        Thread(target=func).start()
-
-    WallGenerator(grid=grid).generate()
-    FrameGenerator(grid=grid).generate()
-else:
-    WallGenerator(grid=grid).generate()
-    RoofGenerator(grid=grid).generate()
-    FrameGenerator(grid=grid).generate()
-    FloorGenerator(grid=grid).generate()
-    FlagGenerator(grid=grid).generate()
-    TowerRoofGenerator(node=grid.nodes[(0, 1, 4)],y_offset=grid.height).generate()
-
-print(datetime.now() - start_time)
+WallGenerator(interface=interface, grid=grid).generate()
+RoofGenerator(interface=interface, grid=grid).generate()
+FrameGenerator(interface=interface, grid=grid).generate()
+FloorGenerator(interface=interface, grid=grid).generate()
+FlagGenerator(interface=interface, grid=grid).generate()
+TowerRoofGenerator(interface=interface, node=grid.nodes[(0, 1, 4)],y_offset=grid.height).generate()

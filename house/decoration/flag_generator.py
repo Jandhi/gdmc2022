@@ -1,7 +1,5 @@
 from random import choice, shuffle
 from directions import Direction
-from house.walls.wall_design import BasicWall
-from tools import setBlock
 from generator import Generator
 from house.grid import Grid, GridNode
 from vector import multiply_vector, sum_vectors
@@ -42,10 +40,10 @@ class FlagGenerator(Generator):
             # pole
             px, py, pz = x + x0, y + y0 + node.height, z + z0
             center = (px, py, pz)
-            setBlock(px, py, pz, 'spruce_log' if y == 0 else 'spruce_fence')
+            self.interface.placeBlock(px, py, pz, 'spruce_log' if y == 0 else f'spruce_fence[{Direction.text[primary_wind_direction]}=true]')
 
             def setRelative(vector, color):
-                setBlock(vector[0], vector[1], vector[2], f'{color}_wool')
+                self.interface.placeBlock(vector[0], vector[1], vector[2], f'{color}_wool')
 
             mv = multiply_vector
 

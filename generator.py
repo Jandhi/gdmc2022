@@ -1,6 +1,6 @@
 from progress.bar import Bar
-
-from tools import USE_BATCHING, sendBlocks
+from gdpc.interface import Interface
+from palette.palette import Palette
 
 class Generator():
     name = 'Generator'
@@ -8,6 +8,8 @@ class Generator():
     x1, y1, z1, x2, y2, z2 = 0, 0, 0, 0, 0, 0
     area = 0, 0, 0, 0
     width, height, depth = 0, 0, 0
+    interface : Interface
+    palette : Palette
     
     def __init__(self, **kwargs) -> None:
         for key, value in kwargs.items():
@@ -38,9 +40,7 @@ class Generator():
         if self.bar:
             self.bar.finish()
 
-        if USE_BATCHING:
-        # we need to send any blocks remaining in the buffer
-            sendBlocks()
-    
+        self.interface.sendBlocks()
+        
     def __generate__(self2):
         pass

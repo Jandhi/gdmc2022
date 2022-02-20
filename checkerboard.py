@@ -1,4 +1,3 @@
-from tools import area, setBlock
 from generator import Generator
 
 class CheckerBoardGenerator(Generator):
@@ -24,15 +23,12 @@ class CheckerBoardGenerator(Generator):
                 self.bar.next()
                 block = self.block1
 
-                board_x = x // width
-                board_z = z // depth
+                board_x = (x - self.x1) // width
+                board_z = (z - self.z1) // depth
 
-                if x % width == 0 or z % depth == 0:
+                if (x - self.x1) % width == 0 or (z - self.z1) % depth == 0:
                     block = self.boundary
                 elif (board_x + board_z) % 2 == 1:
                     block = self.block2
 
-                setBlock(x, self.y, z, block)
-
-if __name__ == '__main__':
-    CheckerBoardGenerator(tile_width=5, tile_depth=5, area=area, y=3).generate()
+                self.interface.placeBlock(x, self.y, z, block)

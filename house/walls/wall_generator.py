@@ -1,6 +1,5 @@
 from directions import Direction
 from house.walls.wall_design import BasicWall
-from tools import setBlock
 from generator import Generator
 from house.grid import Grid, GridNode
 
@@ -27,4 +26,4 @@ class WallGenerator(Generator):
                 if not self.design:
                     self.design = BasicWall()
 
-                self.design.generate_wall(node, direction)
+                self.design.generate_wall(self.interface, node, direction)

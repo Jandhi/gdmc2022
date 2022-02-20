@@ -1,10 +1,13 @@
+from directions import Direction
 from generator import Generator
 from house.grid import Grid, GridNode
-from tools import setBlock
+from palette.palette import Palette
+from noise.random import hash_vector
 
 class FrameGenerator(Generator):
     name = 'FrameGenerator'
     grid : Grid = None
+    palette = Palette()
 
     def __get_work_amount__(self) -> int:
         if self.grid:
@@ -25,15 +28,15 @@ class FrameGenerator(Generator):
         for x in (0, node.width - 1):
             for y in range(node.height):
                 for z in (0, node.depth - 1):
-                    setBlock(x + x0, y + y0, z + z0, 'spruce_log[axis=y]')
+                    self.palette.frame.place_block(self.interface, hash_vector((x + x0, y + y0, z + z0)), x + x0, y + y0, z + z0, Direction.y_plus)
         
         # sides
         for x in (0, node.width - 1):
             for y in (0, node.height - 1):
                 for z in range(1, node.depth - 1):
-                    setBlock(x + x0, y + y0, z + z0, 'spruce_log[axis=z]')
+                    self.palette.frame.place_block(self.interface, hash_vector((x + x0, y + y0, z + z0)), x + x0, y + y0, z + z0, Direction.z_plus)
         
         for x in range(1, node.width - 1):
             for y in (0, node.height - 1):
                 for z in (0, node.depth - 1):
-                    setBlock(x + x0, y + y0, z + z0, 'spruce_log[axis=x]')
+                    self.palette.frame.place_block(self.interface, hash_vector((x + x0, y + y0, z + z0)), x + x0, y + y0, z + z0, Direction.x_plus)

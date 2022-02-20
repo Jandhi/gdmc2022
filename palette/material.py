@@ -1,60 +1,29 @@
-from matplotlib.pyplot import sca
-from tools import setBlock
-from noise.random import hash_vector, recursive_hash
-from vector import product, product_vectors
-from directions import Direction
-
-class Block:
-    weight = 0.0
-    scaling = (1.0, 1.0, 1.0)
-    direction_scaling = {}
-
-    def __init__(self, name, weight, scaling = None, direction_scaling = None) -> None:
-        self.name = name
-        self.weight = weight
-
-        if scaling:
-            self.scaling = scaling
-        
-        if direction_scaling:
-            self.direction_scaling = direction_scaling
-
-    def get_odds(self, x, y, z, direction) -> float:
-        location_scaling = product(product_vectors((x, y, z), self.scaling))
-        direction_scaling = self.direction_scaling[direction] if direction in self.direction_scaling else 1.0
-        return self.weight * location_scaling * direction_scaling
+from gdpc.interface import Interface
+from noise.noise import choose, choose_weighted
+from palette.block import Block
 
 class Material:
-    __contents : list[Block] = []
+    def place_block(self, interface: Interface, seed: int, x: int, y: int, z: int, direction=None):
+        pass
 
-    def __init__(self, contents : list[tuple[str, float]] = None) -> None:
-        if contents:
-            self.__contents = contents
+class BasicMaterial(Material):
+    def __init__(self, block : Block) -> None:
+        self.block = block
 
-    def with_block(self, block, weight):
-        self.__contents.append((weight, block))
-        return self
-    
-    def get_block(self, seed, x, y, z, direction) -> str:
-        total_weight = 0
-        blocks = []
+    def place_block(self, interface: Interface, seed: int, x: int, y: int, z: int, direction=None):
+        block = self.block.get_facing(direction)
+        interface.placeBlock(x, y, z, block)
 
-        for block in self.__contents:
-            odds = block.get_odds(x, y, z, direction)
-            total_weight += odds
-            blocks.append((block, odds))
+class MixedMaterial(Material):
+    def __init__(self, materials : list[Material]) -> None:
+        self.materials = materials
 
-        index = seed % total_weight
+    def place_block(self, interface: Interface, seed: int, x: int, y: int, z: int, direction=None):
+        choose(seed, self.materials).place_block(interface, seed, x, y, z, direction)
 
-        for block, weight in blocks:
-            index -= weight
+class WeightedMaterial(Material):
+    def __init__(self, materials : list[tuple[Material, int]]) -> None:
+        self.materials = materials
 
-            if index < 0:
-                return block
-    
-    def fill(self, coords, size, direction) -> None:
-        x0, y0, z0 = coords
-        
-        
-    
-    
+    def place_block(self, interface: Interface, seed: int, x: int, y: int, z: int, direction=None):
+        choose_weighted(seed, self.materials).place_block(interface, seed, x, y, z, direction)

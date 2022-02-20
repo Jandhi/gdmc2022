@@ -1,7 +1,31 @@
+from typing import TypeVar
+
+
 BITNOISE1 = 0x85297a4d
 BITNOISE2 = 0x68e31da4
 BITNOISE3 = 0x1859c4e9
 BITNOISE4 = 0x0c1fc20b
+
+T = TypeVar('T')
+
+# returns a random element from list
+def choose(seed, list : list[T]) -> T:
+    return list[seed % len(list)]
+
+# returns a random element from a list of pairs, where the second element in a pair is the weight
+def choose_weighted(seed, list : list[tuple[T, int]]) -> T:
+    total = 0
+
+    for item, weight in list:
+        total += weight
+
+    i = seed % total
+
+    for item, weight in list:
+        i -= weight
+
+        if i <= 0:
+            return item
 
 # returns true or false based on successes to total odds
 def odds(seed, successes, total) -> bool:
