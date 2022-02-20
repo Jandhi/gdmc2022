@@ -9,8 +9,6 @@ from house.roof.tower_roof import TowerRoofGenerator
 from house.walls.wall_generator import WallGenerator
 from gdpc.interface import requestPlayerArea, Interface, setBuildArea
 
-MULTI = True
-
 area = list(requestPlayerArea(66, 66))
 area[1] = 3
 area[4] = 200
