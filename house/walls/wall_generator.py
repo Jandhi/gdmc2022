@@ -1,29 +1,28 @@
 from directions import Direction
-from house.walls.wall_design import BasicWall
+from house.house import House
+from house.walls.wall_design import BasicWall, RecededWall
 from generator import Generator
-from house.grid import Grid, GridNode
+from house.grid import GridNode
+from gdpc.interface import Interface
 
 class WallGenerator(Generator):
     name = 'Wall Generator'
-    grid : Grid = None
-    design = None
+    house : House
 
     def __get_work_amount__(self) -> int:
-        if self.grid:
-            return len(self.grid.nodes)
+        if self.house.grid:
+            return len(self.house.grid.nodes)
 
-    def __generate__(self):
-        if not self.grid:
+    def __generate__(self, interface : Interface):
+        if not self.house:
             return
         
-        for node in self.grid.nodes.values():
-            self.generate_for_node(node)
+        for node in self.house.grid.nodes.values():
+            self.generate_for_node(node, interface)
             self.bar.next()
 
-    def generate_for_node(self, node : GridNode):
+    def generate_for_node(self, node : GridNode, interface : Interface):
         for direction in Direction.cardinal:
             if not node.get_neighbour(direction):
-                if not self.design:
-                    self.design = BasicWall()
-
-                self.design.generate_wall(self.interface, node, direction)
+                design = RecededWall() if self.house.receded_ground_floor and node.y == 0 else BasicWall()
+                design.generate_wall(interface, node, direction)

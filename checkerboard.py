@@ -1,4 +1,5 @@
 from generator import Generator
+from gdpc.interface import Interface
 
 class CheckerBoardGenerator(Generator):
     name      = 'checkerboard'
@@ -13,7 +14,7 @@ class CheckerBoardGenerator(Generator):
     def __get_work_amount__(self) -> int:
         return self.width * self.depth
 
-    def __generate__(self):
+    def __generate__(self, interface : Interface):
         # subtract one for overlapping edges
         width = self.tile_width - 1 
         depth = self.tile_depth - 1
@@ -31,4 +32,4 @@ class CheckerBoardGenerator(Generator):
                 elif (board_x + board_z) % 2 == 1:
                     block = self.block2
 
-                self.interface.placeBlock(x, self.y, z, block)
+                interface.placeBlock(x, self.y, z, block)

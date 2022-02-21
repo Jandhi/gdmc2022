@@ -36,3 +36,6 @@ class Block:
             axis = 'z'
         
         return f'{self.name}[axis={axis}]'
+    
+    def material(self):
+        pass

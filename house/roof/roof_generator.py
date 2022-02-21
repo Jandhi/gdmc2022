@@ -1,6 +1,7 @@
 from generator import Generator
 from house.grid import Grid, GridNode
 from directions import Direction
+from gdpc.interface import Interface
 
 class RoofGenerator(Generator):
     name = 'Roof Generator'
@@ -11,15 +12,15 @@ class RoofGenerator(Generator):
         if self.grid:
             return len(self.grid.nodes)
 
-    def __generate__(self):
+    def __generate__(self, interface : Interface):
         if not self.grid:
             return
         
         for node in self.grid.nodes.values():
-            self.generate_for_node(node)
+            self.generate_for_node(node, interface)
             self.bar.next()
 
-    def generate_for_node(self, node : GridNode):
+    def generate_for_node(self, node : GridNode, interface : Interface):
         # should not generate for bottom nodes
         if node.get_neighbour(Direction.up):
             return
@@ -30,13 +31,13 @@ class RoofGenerator(Generator):
 
         for x in range(x1, x2):
             for z in range(z1, z2):
-                self.interface.placeBlock(x, y0 + node.height - 1, z, self.block)
+                interface.placeBlock(x, y0 + node.height - 1, z, self.block)
         
         for direction in Direction.cardinal:
             if not node.get_neighbour(direction):
-                self.generate_side(node, direction)
+                self.generate_side(node, direction, interface)
     
-    def generate_side(self, node : GridNode, direction):
+    def generate_side(self, node : GridNode, direction, interface : Interface):
         points = node.get_side_points([direction, Direction.up])
         for i, (x, y, z) in enumerate(points):
             x0, y0, z0 = node.get_origin()
@@ -51,4 +52,4 @@ class RoofGenerator(Generator):
             else:
                 block = f'spruce_stairs[facing={Direction.text[direction]}]'
 
-            self.interface.placeBlock(x + x0, y + 1 + y0, z + z0, block)
+            interface.placeBlock(x + x0, y + 1 + y0, z + z0, block)
