@@ -1,21 +1,20 @@
 from random import choice, shuffle
 from directions import Direction
-from house.walls.wall_design import BasicWall
-from tools import setBlock
 from generator import Generator
 from house.grid import Grid, GridNode
 from vector import multiply_vector, sum_vectors
+from gdpc.interface import Interface
 
 class FlagGenerator(Generator):
     name = 'Flag Generator'
     grid : Grid = None
     design = None
 
-    def __generate__(self):
+    def __generate__(self, interface : Interface):
         if not self.grid:
             return
         
-        self.generate_for_node(self.get_highest_node())
+        self.generate_for_node(self.get_highest_node(), interface)
 
     def get_highest_node(self) -> GridNode:
         nodes = list(self.grid.nodes.values())
@@ -24,7 +23,7 @@ class FlagGenerator(Generator):
             return node.y
         return max(nodes, key=height) 
 
-    def generate_for_node(self, node : GridNode):
+    def generate_for_node(self, node : GridNode, interface : Interface):
         x0, y0, z0 = node.get_origin()
         x, z = node.width // 2, node.depth // 2
         
@@ -42,10 +41,10 @@ class FlagGenerator(Generator):
             # pole
             px, py, pz = x + x0, y + y0 + node.height, z + z0
             center = (px, py, pz)
-            setBlock(px, py, pz, 'spruce_log' if y == 0 else 'spruce_fence')
+            interface.placeBlock(px, py, pz, 'spruce_log' if y == 0 else f'spruce_fence[{Direction.text[primary_wind_direction]}=true]')
 
             def setRelative(vector, color):
-                setBlock(vector[0], vector[1], vector[2], f'{color}_wool')
+                interface.placeBlock(vector[0], vector[1], vector[2], f'{color}_wool')
 
             mv = multiply_vector
 

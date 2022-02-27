@@ -1,7 +1,10 @@
 from directions import Direction
+from palette.palette import Palette
 from vector import sum_vectors
 
 class GridNode:
+    palette : Palette
+
     def __init__(self, x, y, z, grid) -> None:
         self.x = x
         self.y = y

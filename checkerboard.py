@@ -1,5 +1,5 @@
-from tools import area, setBlock
 from generator import Generator
+from gdpc.interface import Interface
 
 class CheckerBoardGenerator(Generator):
     name      = 'checkerboard'
@@ -14,7 +14,7 @@ class CheckerBoardGenerator(Generator):
     def __get_work_amount__(self) -> int:
         return self.width * self.depth
 
-    def __generate__(self):
+    def __generate__(self, interface : Interface):
         # subtract one for overlapping edges
         width = self.tile_width - 1 
         depth = self.tile_depth - 1
@@ -24,15 +24,12 @@ class CheckerBoardGenerator(Generator):
                 self.bar.next()
                 block = self.block1
 
-                board_x = x // width
-                board_z = z // depth
+                board_x = (x - self.x1) // width
+                board_z = (z - self.z1) // depth
 
-                if x % width == 0 or z % depth == 0:
+                if (x - self.x1) % width == 0 or (z - self.z1) % depth == 0:
                     block = self.boundary
                 elif (board_x + board_z) % 2 == 1:
                     block = self.block2
 
-                setBlock(x, self.y, z, block)
-
-if __name__ == '__main__':
-    CheckerBoardGenerator(tile_width=5, tile_depth=5, area=area, y=3).generate()
+                interface.placeBlock(x, self.y, z, block)

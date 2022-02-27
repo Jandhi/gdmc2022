@@ -38,9 +38,72 @@ class Direction:
         z_minus : (0, 0, -1)
     }
 
-    stairs = {
+    text = {
         north : 'north',
         east : 'east',
         south : 'south',
         west : 'west'
     }
+
+    forwards = {
+        north : north,
+        east : east,
+        south : south,
+        west: west
+    }
+    right = {
+        north: east,
+        east: south,
+        south: west,
+        west: north,
+    }
+    left = {
+        north: west,
+        west: south,
+        south: east,
+        east: north
+    }
+    backwards = opposite
+
+# adds directions as if block originally faced up
+def add_directions(dir1, dir2):
+    if dir1 == Direction.y_plus:
+        return dir2
+    elif dir1 == Direction.y_minus:
+        return Direction.opposite[dir2]
+    elif dir1 == Direction.x_plus:
+        return {
+            Direction.y_plus : Direction.x_plus,
+            Direction.x_plus : Direction.y_minus,
+            Direction.y_minus : Direction.x_minus,
+            Direction.x_minus : Direction.y_plus,
+            Direction.z_plus : Direction.z_plus,
+            Direction.z_minus : Direction.z_minus
+        }[dir2]
+    elif dir1 == Direction.x_minus:
+        return {
+            Direction.y_plus : Direction.x_minus,
+            Direction.x_minus : Direction.y_minus,
+            Direction.y_minus: Direction.x_plus,
+            Direction.x_plus: Direction.y_plus,
+            Direction.z_plus : Direction.z_plus,
+            Direction.z_minus : Direction.z_minus
+        }[dir2]
+    elif dir1 == Direction.z_plus:
+        return {
+            Direction.z_minus : Direction.y_plus,
+            Direction.y_plus : Direction.z_plus,
+            Direction.z_plus : Direction.y_minus,
+            Direction.y_minus : Direction.z_minus,
+            Direction.x_plus : Direction.x_plus,
+            Direction.x_minus : Direction.x_minus,
+        }[dir2]
+    elif dir1 == Direction.z_minus:
+        return {
+            Direction.z_plus : Direction.y_plus,
+            Direction.y_plus : Direction.z_minus,
+            Direction.z_minus : Direction.y_minus,
+            Direction.y_minus : Direction.z_plus,
+            Direction.x_plus : Direction.x_plus,
+            Direction.x_minus : Direction.x_minus,
+        }[dir2]

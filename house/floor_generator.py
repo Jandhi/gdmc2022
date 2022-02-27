@@ -1,6 +1,6 @@
 from generator import Generator
 from house.grid import Grid, GridNode
-from tools import setBlock
+from gdpc.interface import Interface
 
 class FloorGenerator(Generator):
     name = 'Floor Generator'
@@ -11,20 +11,20 @@ class FloorGenerator(Generator):
         if self.grid:
             return len(self.grid.nodes)
 
-    def __generate__(self):
+    def __generate__(self, interface : Interface):
         if not self.grid:
             return
         
         for node in self.grid.nodes.values():
-            self.generate_for_node(node)
+            self.generate_for_node(node, interface)
             self.bar.next()
 
-    def generate_for_node(self, node : GridNode):
+    def generate_for_node(self, node : GridNode, interface : Interface):
         x0, y0, z0 = node.get_origin()
         x1, x2 = x0 + 1, x0 + node.width - 1
         z1, z2 = z0 + 1, z0 + node.depth - 1
 
         for x in range(x1, x2):
             for z in range(z1, z2):
-                setBlock(x, y0, z, self.block)
+                interface.placeBlock(x, y0, z, self.block)
         
