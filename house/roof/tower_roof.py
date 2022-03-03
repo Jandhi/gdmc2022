@@ -22,10 +22,10 @@ class TowerRoofGenerator(Generator):
 
             for x in range(x1, x2 + 1):
                 block = 'cobblestone_stairs' if x - x1 == (x2 - x1) // 2 else 'dark_oak_stairs'
-                interface.placeBlock(x0 + x, y0 + self.y_offset + y, z0 + z1, f'{block}[facing={Direction.text[Direction.z_plus]}]')
-                interface.placeBlock(x0 + x, y0 + self.y_offset + y, z0 + z2, f'{block}[facing={Direction.text[Direction.z_minus]}]')
+                interface.placeBlock(x0 + x, y0 + self.y_offset + y, z0 + z1, f'{block}[facing={Direction.cardinal_text[Direction.z_plus]}]')
+                interface.placeBlock(x0 + x, y0 + self.y_offset + y, z0 + z2, f'{block}[facing={Direction.cardinal_text[Direction.z_minus]}]')
 
             for z in range(z1, z2 + 1):
                 block = 'cobblestone_stairs' if z - z1 == (z2 - z1) // 2 else 'dark_oak_stairs'
-                interface.placeBlock(x0 + x1, y0 + self.y_offset + y, z0 + z, f'{block}[facing={Direction.text[Direction.x_plus]}]')
-                interface.placeBlock(x0 + x2, y0 + self.y_offset + y, z0 + z, f'{block}[facing={Direction.text[Direction.x_minus]}]')
+                interface.placeBlock(x0 + x1, y0 + self.y_offset + y, z0 + z, f'{block}[facing={Direction.cardinal_text[Direction.x_plus]}]')
+                interface.placeBlock(x0 + x2, y0 + self.y_offset + y, z0 + z, f'{block}[facing={Direction.cardinal_text[Direction.x_minus]}]')

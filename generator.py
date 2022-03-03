@@ -11,8 +11,7 @@ class Generator():
     palette : Palette
     
     def __init__(self, **kwargs) -> None:
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+        self.__dict__.update(kwargs)
         
         if len(self.area) == 4:
             self.x1, self.z1, self.x2, self.z2 = self.area

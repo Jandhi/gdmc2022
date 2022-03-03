@@ -11,6 +11,8 @@ class Direction:
     z_plus = 'z_plus'
     z_minus = 'z_minus'
 
+    all = {x_plus, x_minus, y_plus, y_minus, z_plus, z_minus}
+
     north = z_minus
     east = x_plus
     south = z_plus
@@ -38,7 +40,7 @@ class Direction:
         z_minus : (0, 0, -1)
     }
 
-    text = {
+    cardinal_text = {
         north : 'north',
         east : 'east',
         south : 'south',
