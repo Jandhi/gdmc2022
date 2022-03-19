@@ -27,9 +27,3 @@ print(area)
 Clear(area=(1, 1, 66, 66), y=4, height_limit=30).generate(interface)
 CheckerBoardGenerator(grid=grid, area=(1, 1, 66, 66), tile_width=grid.width, tile_depth=grid.depth, y=3).generate(interface)
 HouseGenerator(house=house).generate(interface)
-
-for x in range(50):
-    for z in range(50):
-        for node in house.grid.nodes.values():
-            node.palette.wall.place_block(interface, x, 20, z)
-        
