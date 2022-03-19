@@ -5,19 +5,29 @@ from directions import Direction, add_directions
 @dataclass
 class Block:
     name : str
+    attributes : dict[str, str] = None
     is_log : bool = False
+    is_stairs : bool = False
     base_direction : str = None
 
-    def get_facing(self, direction):
+    def new(self):
+        self.attributes = {}
+        return self
+    
+    def set_attributes(self, attributes : dict[str, str]):
+        self.attributes = attributes
+
+    def set_facing(self, direction):
         true_direction = self.get_true_direction(direction)
 
         if not true_direction:
-            return self.name
+            return
 
         if self.is_log:
-            return self.__get_facing_log(true_direction)
-        
-        return self.name
+            self.__set_facing_log(true_direction)
+
+        if self.is_stairs:
+            return self.__set_facing_stairs(true_direction)
     
     def get_true_direction(self, direction):
         if not direction:
@@ -28,14 +38,30 @@ class Block:
         
         return add_directions(direction, self.base_direction)
     
-    def __get_facing_log(self, direction):
+    def __set_facing_stairs(self, direction):
+        self.attributes['facing'] = Direction.cardinal_text[direction]
+    
+    def __set_facing_log(self, direction):
         axis = 'x'
         if direction in (Direction.y_plus, Direction.y_minus):
             axis = 'y'
         elif direction in (Direction.z_plus, Direction.z_minus):
             axis = 'z'
         
-        return f'{self.name}[axis={axis}]'
+        self.attributes['axis'] = axis
     
     def material(self):
         pass
+
+    def __str__(self) -> str:
+        string = self.name
+
+        if len(self.attributes) > 0:
+            attrs = ''
+
+            for attr in self.attributes:
+                attrs += f',{attr}={self.attributes[attr]}'
+
+            string = f'{string}[{attrs[1:]}]'
+        
+        return string

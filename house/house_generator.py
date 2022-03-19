@@ -1,15 +1,19 @@
 from generator import Generator
+from house.house import House
 from house.walls.wall_generator import WallGenerator
 from house.grid import Grid
 from gdpc.interface import Interface
-from house.frame_generator import FrameGenerator
+from house.roof.roof_generator import RoofGenerator
+from house.windows.window_generator import WindowGenerator
+from house.floor_generator import FloorGenerator
 
 class HouseGenerator(Generator):
-    name = 'HouseGenerator'
-    grid : Grid = None
+    name = 'House Generator'
+    house : House = None
 
     def __generate__(self, interface : Interface):
         if not self.house:
             return
-        
-        WallGenerator(house=self.house).generate(interface)
+
+        for generator in (WallGenerator, WindowGenerator, FloorGenerator, RoofGenerator):
+            generator(house=self.house).generate(interface)

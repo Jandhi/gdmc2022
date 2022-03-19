@@ -35,6 +35,9 @@ class GridNode:
         
         return nodes
 
+    def get_neighbour_dict(self):
+        return { dir : self.get_neighbour(dir) for dir in Direction.all }
+
     def get_origin(self) -> tuple[int, int, int]:
         x, y, z = self.grid.origin
         return (

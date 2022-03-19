@@ -33,7 +33,7 @@ def choose_weighted(seed, list : list[tuple[T, int]]) -> T:
     for item, weight in list:
         i -= weight
 
-        if i <= 0:
+        if i < 0:
             return item
 
 # returns true or false based on successes to total odds
