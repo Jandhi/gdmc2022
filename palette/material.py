@@ -2,6 +2,8 @@ from gdpc.interface import Interface
 from noise.random import hash_vector
 from noise.noise import choose, choose_weighted
 from palette.block import Block
+from random import seed
+from random import randint
 
 class Material:
     def place_block(self, interface: Interface, seed: int, x: int, y: int, z: int, direction=None):
@@ -11,9 +13,18 @@ class BasicMaterial(Material):
     def __init__(self, block : Block) -> None:
         self.block = block
 
-    def place_block(self, interface: Interface, x: int, y: int, z: int, direction=None, seed: int=None):
-        block = self.block.get_facing(direction)
-        interface.placeBlock(x, y, z, block)
+    def place_block(self, interface: Interface, x: int, y: int, z: int, chance: int=100, direction=None, Seed: int=None):
+        seed()
+        if chance!=100:
+            a = randint(1,100)
+            if a<=chance:
+                block = self.block.get_facing(direction)
+                interface.placeBlock(x, y, z, block)
+            else:
+                pass
+        else:
+            block = self.block.get_facing(direction)
+            interface.placeBlock(x, y, z, block)
 
 # Extension function for Block to turn it into a basic material
 def material(self) -> Material:

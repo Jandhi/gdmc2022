@@ -10,3 +10,5 @@ class Palette:
     floor : Material = BasicMaterial(Block('oak_planks'))
     roof : Material = BasicMaterial(Block('oak_log'))
     wall : Material = BasicMaterial(Block('oak_planks'))
+    wood : Material = BasicMaterial(Block('birch_wood'))
+    leaves : Material = BasicMaterial(Block(f'birch_leaves[persistent=true]'))
