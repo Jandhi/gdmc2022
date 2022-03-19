@@ -8,6 +8,15 @@ BITNOISE4 = 0x0c1fc20b
 
 T = TypeVar('T')
 
+# returns a new shuffled list
+def shuffle(seed, list : list[T]) -> list[T]:
+    new_list = []
+
+    while len(list) > 0:
+        new_list.append(list.pop(hash(seed, len(list)) % len(list)))
+    
+    return new_list
+
 # returns a random element from list
 def choose(seed, list : list[T]) -> T:
     return list[seed % len(list)]
