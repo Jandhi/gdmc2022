@@ -30,12 +30,12 @@ class City:
             b = randint(z_min,z_max)
             point = (a, self.y+1, b)
             c = randint(0,9)
-            if c>5:
-                 type = "medium_birch"
-            elif 3<=c<=5:
-                 type = "small_birch"
-            else:
-                type = "large_birch"
-            type = "small_pine"
+            #if c>8:
+            #     type = "large_baobab"
+            #elif 4<=c<=8:
+            #     type = "medium_baobab"
+            #else:
+            #    type = "small_baobab"
+            type = "medium_oak"
             new_tree = Tree(point, type)
             self.trees.append(new_tree)
