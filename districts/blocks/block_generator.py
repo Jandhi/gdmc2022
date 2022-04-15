@@ -1,11 +1,12 @@
 from generator import Generator
-from house.grid import Grid
+from house.grid import Grid, node_to_world_coords
 from house.house import House
 from house.house_generator import HouseGenerator
 from gdpc.interface import Interface
+from house.node_placer import NodePlacer
 
 from noise.noise import shuffle
-from noise.random import recursive_hash
+from noise.random import odds, recursive_hash as rhash
 
 class BlockGenerator(Generator):
     name = 'BlockGenerator'
@@ -36,35 +37,31 @@ class BlockGenerator(Generator):
         grid_width = 5
         grid_depth = 5
         
-        for args in shuffle(recursive_hash(x, z), [
+        for args in shuffle(rhash(x, z), [
             (x, z, grid_width, grid_depth),
             (x - grid_width + 1, z, grid_width, grid_depth),
             (x, z - grid_depth + 1, grid_width, grid_depth),
             (x - grid_width + 1, z - grid_depth + 1, grid_width, grid_depth)
         ]):
             if self.is_clear(*args):
-                self.place(*args, interface)
+                self.start_house(*args, interface)
                 return True
         
         return False
 
-    def place(self, x, z, width, depth, interface : Interface):
-        if recursive_hash(hash(self.name), x, z) % 3 == 0:
+    def start_house(self, x, z, width, depth, interface : Interface):
+        if rhash(hash(self.name), x, z) % 2 == 0:
             return
 
-        for dx in range(width):
-            for dz in range(depth):
-                self.passable_map[x + dx][z + dz] = False
-                interface.placeBlock(x + dx, 4, z + dz, 'red_stained_glass')
+        grid = Grid((x, 3, z), (width, 5, depth))
 
-                grid = Grid((x, 3, z), (width, 5, depth))
-                grid.add_node(0, 0, 0)
-                grid.add_node(0, 1, 0)
+        NodePlacer(grid, self.passable_map, interface).run()
 
-                house = House(grid)
-                house.receded_ground_floor = False
+        house = House(grid)
+        house.has_receded_ground_floor = False
+        house.has_frame = True
 
-                HouseGenerator(house=house).generate(interface)
+        HouseGenerator(house=house).generate(interface)
 
     def is_clear(self, x, z, width, depth):
         # check bounds

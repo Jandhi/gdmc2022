@@ -4,11 +4,11 @@ from directions import Axis, Direction
 from gdpc.interface import Interface
 
 from house.house import House
+from house.roof.basic_roof import BasicRoof
 from house.roof.slant_roof import SlantRoof
 
 class RoofGenerator(Generator):
     name = 'Roof Generator'
-    house : House = None
 
     def __get_work_amount__(self) -> int:
         if self.house.grid:
@@ -27,6 +27,8 @@ class RoofGenerator(Generator):
         if node.get_neighbour(Direction.up):
             return
         
-        SlantRoof(axis=Axis.X).generate_roof(interface, node)
+        BasicRoof().generate_roof(interface, node)
+
+        # SlantRoof(axis=Axis.X).generate_roof(interface, node)
     
     

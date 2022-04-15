@@ -5,16 +5,15 @@ from palette.palette import Palette
 
 class House:
     grid : Grid
-    receded_ground_floor : bool = True
+    has_receded_ground_floor : bool
+    has_frame : bool
 
     def __init__(self, grid : Grid) -> None:
         self.grid = grid
+        self.has_receded_ground_floor = True
+        self.has_frame = False
 
-        wall = WeightedMaterial([
-            (Block('end_stone_bricks').material(), 10), 
-            (Block('end_stone').material(), 1)
-        ])
-
+        wall = Block('white_wool').material()
         floor = Block('birch_planks').material()
 
         upper_palette = Palette(

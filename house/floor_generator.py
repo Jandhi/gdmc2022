@@ -7,7 +7,6 @@ from house.house import House
 
 class FloorGenerator(Generator):
     name = 'Floor Generator'
-    house : House = None
 
     def __get_work_amount__(self) -> int:
         if self.house.grid:

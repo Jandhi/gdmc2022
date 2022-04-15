@@ -7,7 +7,6 @@ class Generator():
     bar = None
     x1, y1, z1, x2, y2, z2 = 0, 0, 0, 0, 0, 0
     area = 0, 0, 0, 0
-    width, height, depth = 0, 0, 0
     palette : Palette
     
     def __init__(self, **kwargs) -> None:
@@ -40,5 +39,5 @@ class Generator():
 
         interface.sendBlocks()
         
-    def __generate__(self2, interface: Interface):
+    def __generate__(self, interface: Interface):
         pass

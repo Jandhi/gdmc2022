@@ -1,4 +1,5 @@
 from generator import Generator
+from house.frame_generator import FrameGenerator
 from house.house import House
 from house.walls.wall_generator import WallGenerator
 from house.grid import Grid
@@ -9,11 +10,15 @@ from house.floor_generator import FloorGenerator
 
 class HouseGenerator(Generator):
     name = 'House Generator'
-    house : House = None
 
     def __generate__(self, interface : Interface):
         if not self.house:
             return
 
-        for generator in (WallGenerator, WindowGenerator, FloorGenerator, RoofGenerator):
+        generators = [WallGenerator, WindowGenerator, FloorGenerator, RoofGenerator]
+
+        if self.house.has_frame:
+            generators.append(FrameGenerator)
+
+        for generator in generators:
             generator(house=self.house).generate(interface)

@@ -1,11 +1,10 @@
 from directions import Direction
 from generator import Generator
-from house.grid import Grid, GridNode
+from house.grid import GridNode
 from gdpc.interface import Interface
 
 class FrameGenerator(Generator):
     name = 'FrameGenerator'
-    grid : Grid = None
 
     def __get_work_amount__(self) -> int:
         if self.house.grid:
