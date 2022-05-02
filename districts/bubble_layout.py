@@ -1,8 +1,8 @@
 
-from districts.district import District
+from districts.bubble import Bubble
 
-class DistrictLayout:
-    def __init__(self, districts : list[District]) -> None:
+class BubbleLayout:
+    def __init__(self, districts : list[Bubble]) -> None:
         self.districts = districts
 
         self.are_neighbours_list = [

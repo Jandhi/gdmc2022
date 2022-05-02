@@ -1,16 +1,18 @@
 from tkinter import E
-from districts.district import District
-from districts.district_layout import DistrictLayout
+from districts.bubble import Bubble
+from districts.bubble_layout import BubbleLayout
 from generator import Generator
 from gdpc.interface import Interface
 from noise.random import recursive_hash as rhash
 from pathfinding.pathfinder import get_web
+from pathfinding.roadpaths import ROAD, create_get_neighbours_function, get_cost
 from util.point_utils import distance_2d, neighbours_2d, neighbours_2d_diagonal
+from math import cos, log, pi, sin
 
-class DistrictGenerator(Generator):
-    name = 'district generator'
+class BubbleGenerator(Generator):
+    name = 'bubble generator'
     point_amount = 20
-    district_colors = [
+    bubble_colors = [
         'red_wool',
         'light_blue_wool',
         'yellow_wool',
@@ -25,26 +27,26 @@ class DistrictGenerator(Generator):
         'brown_wool'
     ]
 
-    def get_district_color(self, district):
-        return self.district_colors[district % len(self.district_colors)]
+    def get_bubble_color(self, district):
+        return self.bubble_colors[district % len(self.bubble_colors)]
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
 
-        self.districts : list[District] = None
-        self.district_layout : DistrictLayout = None
+        self.bubbles : list[Bubble] = None
+        self.bubble_layout : BubbleLayout = None
 
     def __get_work_amount__(self) -> int:
         return self.width * self.depth
 
     def __generate__(self, interface : Interface):
-        district_map = [[None for z in range(self.depth)] for x in range(self.width)]
+        bubble_map = [[None for z in range(self.depth)] for x in range(self.width)]
 
-        self.flood(district_map)
+        self.flood(bubble_map)
 
         for x in range(self.width):
             for z in range(self.depth):
-                interface.placeBlock(x, 3, z, self.get_district_color(district_map[x][z]))
+                interface.placeBlock(x, 3, z, self.get_bubble_color(bubble_map[x][z]))
         
         self.generate_roads(interface)
         
@@ -55,22 +57,26 @@ class DistrictGenerator(Generator):
             for x, z in neighbours_2d(point):
                 interface.placeBlock(x, 3, z, 'cobblestone')
 
+    def get_random_start_point(self, seed):
+        x = rhash(seed, 0) % self.width
+        z = rhash(seed, 1) % self.depth
+        return (x, z)
+
     def generate_start_points(self):
         start_points = []
         attempts = 0
 
         for p in range(self.point_amount):
-            seed = rhash(hash('district_generator_points'), attempts)
+            seed = rhash(hash('bubble_generator_points'), attempts)
             attempts += 1
-            x = rhash(seed, 0) % self.width
-            z = rhash(seed, 1) % self.depth
+            x, z = self.get_random_start_point(seed)
 
             for px, pz in start_points:
-                while abs(px - x) + abs(pz - z) < 6:
-                    seed = rhash(hash('district_generator_points'), attempts)
+                is_out_of_bounds = x < 0 or x >= self.width or z < 0 or z >= self.depth
+                while is_out_of_bounds or abs(px - x) + abs(pz - z) < 6:
+                    seed = rhash(hash('bubble_generator_points'), attempts)
                     attempts += 1
-                    x = rhash(seed, 0) % self.width
-                    z = rhash(seed, 1) % self.height
+                    x, z = self.get_random_start_point(seed)
 
                     if attempts > 100:
                         break
@@ -79,66 +85,56 @@ class DistrictGenerator(Generator):
         
         return start_points
 
-    def flood(self, district_map):
+    def flood(self, bubble_map):
         start_points = self.generate_start_points()
-        self.districts = []
+        self.bubbles = []
 
         for index, point in enumerate(start_points):
             x, z = point
-            district_map[x][z] = index
-            self.districts.append(District(point))
+            bubble_map[x][z] = index
+            self.bubbles.append(Bubble(point))
 
-        self.district_layout = DistrictLayout(self.districts)
+        self.bubble_layout = BubbleLayout(self.bubbles)
 
         queue = start_points.copy()
         visited = set()
 
         while len(queue) > 0:
             x, z = queue.pop(0)
-            current_district_index = district_map[x][z]
+            current_bubble_index = bubble_map[x][z]
 
             for px, pz in neighbours_2d((x, z)):
                 # bounds
                 if px < 0 or pz < 0 or px >= self.width or pz >= self.depth:
                     continue
                 
-                if district_map[px][pz] != None:
-                    if district_map[px][pz] != current_district_index:
+                if bubble_map[px][pz] != None:
+                    if bubble_map[px][pz] != current_bubble_index:
                         # establish neighbours
-                        d1, d2 = self.districts[current_district_index], self.districts[district_map[px][pz]]
-                        self.district_layout.set_neighbours(d1, d2)
+                        d1, d2 = self.bubbles[current_bubble_index], self.bubbles[bubble_map[px][pz]]
+                        self.bubble_layout.set_neighbours(d1, d2)
 
                     # already claimed
                     continue
                 else:
                     visited.add((px, pz))
-                    district_map[px][pz] = current_district_index
-                    self.districts[current_district_index].add_point((px, pz))
+                    bubble_map[px][pz] = current_bubble_index
+                    self.bubbles[current_bubble_index].add_point((px, pz))
                     queue.append((px, pz))
 
     def generate_roads(self, interface):
         points = []
         
-        for district in self.districts:
-            x, z = district.average_point
-            points.append((int(x), int(z)))
-        
-        # points.append((0, rhash(hash('trade_route'), 0) % self.depth))
-        # points.append((self.width - 1, rhash(hash('trade_route'), 1) % self.depth))
-        # points.append((rhash(hash('trade_route'), 2) % self.width, 0))
-        # points.append((rhash(hash('trade_route'), 3) % self.width, self.depth - 1))
+        for bubble in self.bubbles:
+            x, z = bubble.average_point
+            y = self.slice.heightmaps['MOTION_BLOCKING_NO_LEAVES'][int(x)][int(z)]
+            points.append((int(x), y, int(z), ROAD, 0))
 
-        def get_neighbours(node):
-            neighbours = []
-            for x, z in neighbours_2d_diagonal(node):
-                if 0 <= x < self.width and 0 <= z < self.depth:
-                    neighbours.append((x, z))
-            return neighbours
-
-        def get_cost(path, end_node):
-            return len(path) + distance_2d(path[-1], end_node)
-
-        web = get_web(points, get_neighbours, get_cost)
+        web = get_web(
+            points, 
+            create_get_neighbours_function(self.width, self.depth, self.slice, interface), 
+            get_cost
+        )
 
         connected = []
         disconnected = list(range(len(points)))
@@ -164,10 +160,10 @@ class DistrictGenerator(Generator):
             c, d = minimum_connection
 
             if c != None and d != None:
-                print(f'Adding path from {self.get_district_color(c)} to {self.get_district_color(d)}')
+                print(f'Adding path from {self.get_bubble_color(c)} to {self.get_bubble_color(d)}')
                 paths.append(web[c][d])
-                self.district_layout.connection_length[c][d] = len(web[c][d])
-                self.district_layout.connection_length[d][c] = len(web[d][c])
+                self.bubble_layout.connection_length[c][d] = len(web[c][d])
+                self.bubble_layout.connection_length[d][c] = len(web[d][c])
             
             connected.append(d)
             disconnected.remove(d)
@@ -177,18 +173,18 @@ class DistrictGenerator(Generator):
         for path in paths:
             self.build_path(path, interface)
         
-    def fill_out_road_graph(self, paths, terrain_web, district_indices):
+    def fill_out_road_graph(self, paths, terrain_web, bubble_indices):
         while True:
             worst_connection = None
             worst_connection_ratio = 0
 
-            def get_neighbours(district_index):
+            def get_neighbours(bubble_index):
                 neighbours = []
-                for other in district_indices:
-                    if other == district_index:
+                for other in bubble_indices:
+                    if other == bubble_index:
                         continue
 
-                    if self.district_layout.connection_length[district_index][other] != -1:
+                    if self.bubble_layout.connection_length[bubble_index][other] != -1:
                         neighbours.append(other)
                 
                 return neighbours
@@ -196,17 +192,17 @@ class DistrictGenerator(Generator):
             def get_cost(path, end_node):
                 cost = 0
                 
-                for index, district in enumerate(path):
+                for index, bubble in enumerate(path):
                     if index == len(path) - 1:
                         return cost
 
                     next = path[index + 1]
-                    cost += self.district_layout.connection_length[district][next]
+                    cost += self.bubble_layout.connection_length[bubble][next]
 
-            web = get_web(district_indices, get_neighbours, get_cost)
+            web = get_web(bubble_indices, get_neighbours, get_cost)
 
-            for a in district_indices:
-                for b in district_indices:
+            for a in bubble_indices:
+                for b in bubble_indices:
                     if a <= b: # don't check path to self or backwards duplicates
                         continue
 
@@ -223,8 +219,8 @@ class DistrictGenerator(Generator):
                 path = terrain_web[a][b]
                 length = len(path)
                 paths.append(path)
-                self.district_layout.connection_length[a][b] = length
-                self.district_layout.connection_length[b][a] = length
+                self.bubble_layout.connection_length[a][b] = length
+                self.bubble_layout.connection_length[b][a] = length
             else:
                 return
 

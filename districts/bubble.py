@@ -1,4 +1,4 @@
-class District:
+class Bubble:
     def __init__(self, point, size = 1) -> None:
         self.point = point
         self.size = size

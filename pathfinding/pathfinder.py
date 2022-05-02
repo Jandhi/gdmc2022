@@ -1,7 +1,7 @@
 import heapq
 from util.point_utils import distance_2d, neighbours_2d_diagonal
 
-def get_path(start_node, end_node, get_neighbours, get_cost):
+def get_path(start_node, end_node, get_neighbours, get_cost, is_end_node = None):
     visited = set()
     visited.add(start_node)
     first_path = [start_node]
@@ -11,7 +11,7 @@ def get_path(start_node, end_node, get_neighbours, get_cost):
     while len(queue) > 0:
         priority, path = heapq.heappop(queue)
         
-        if path[-1] == end_node:
+        if (is_end_node and is_end_node(path[-1])) or path[-1] == end_node:
             return path
         
         for node in get_neighbours(path[-1]):
@@ -31,9 +31,10 @@ def get_web(nodes, get_neighbours, get_cost):
             n1 = nodes[i]
             n2 = nodes[i + j]
 
+            print(f'Finding path between nodes {i} and {i + j}')
             path = get_path(n1, n2, get_neighbours, get_cost)
 
             web[i][i + j] = path
-            web[i + j][i] = path[::-1]
+            web[i + j][i] = path[::-1] if path is not None else path
     
     return web
