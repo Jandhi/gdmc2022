@@ -53,4 +53,4 @@ class WallPillarDesign(WallDesign):
             if y == node.height - 2:
                 node.palette.wall_stairs.place_block(interface, x0 + x, y0 + y, z0 + z, Direction.opposite[direction], {'half': 'top'})
             else:
-                node.palette.wall_wall.place_block(interface, x0 + x, y0 + y, z0 + z)
+                node.palette.wall_fence.place_block(interface, x0 + x, y0 + y, z0 + z)

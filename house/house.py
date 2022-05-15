@@ -27,7 +27,7 @@ class House:
         lower_palette = Palette(
             wall=wall, 
             wall_stairs=Block('end_stone_brick_stairs', is_stairs=True).material(),
-            wall_wall=Block('end_stone_brick_wall').material(),
+            wall_fence=Block('end_stone_brick_wall').material(),
             wall_accent=WeightedMaterial([
                 (Block('cut_sandstone').material(), 10),
                 (Block('sandstone').material(), 1)

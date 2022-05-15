@@ -6,9 +6,7 @@ ROAD = 0
 ROAD_SLAB = 1
 BRIDGE = 2
 
-def create_get_neighbours_function(width, depth, slice, interface, wmap):
-    hmap = slice.heightmaps['MOTION_BLOCKING_NO_LEAVES']
-
+def create_get_neighbours_function(width, depth, hmap, interface, wmap):
     def get_neighbours(node):
         neighbours = []
         x, y, z, type, dir = node

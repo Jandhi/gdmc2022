@@ -11,7 +11,7 @@ class Palette:
     roof : Material = Block('oak_log').material()
     wall : Material = Block('oak_planks').material()
     wall_stairs : Material = Block('oak_stairs', is_stairs=True).material()
-    wall_wall : Material = Block('cobblestone_wall').material() # listen we gotta figure out a better naming system
+    wall_fence : Material = Block('cobblestone_wall').material() # listen we gotta figure out a better naming system
     wall_accent : Material = Block('polished_andesite').material()
     trapdoor : Material = Block('oak_trapdoor').material()
     fence : Material = Block('oak_fence').material()
