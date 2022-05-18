@@ -25,6 +25,14 @@ class BasicMaterial(Material):
         else:
             block = self.block.get_facing(direction)
             interface.placeBlock(x, y, z, block)
+        
+    #a place block that has the possibility of passing swap as true to allow the x and z passed values to swap, used for rotational purposes    
+    def place_block_swap(self, interface: Interface, x:int, y:int, z:int, swap: bool=False):
+        block = self.block
+        if swap:
+            interface.placeBlock(z, y, x, block)
+        else:
+            interface.placeBlock(x, y, z, block)
 
 # Extension function for Block to turn it into a basic material
 def material(self) -> Material:

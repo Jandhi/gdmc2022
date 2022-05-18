@@ -4,6 +4,7 @@ from palette.block import Block
 from palette.material import BasicMaterial
 from palette.palette import Palette
 from misc.tree import Tree
+from market.stall import Stall
 from random import seed
 from random import randint
 
@@ -14,6 +15,7 @@ class City:
         self.y = y
         self.p2 = p2
         self.trees = []
+        self.stalls = []
 
     def add_tree(self, point, type):
         self.trees.append(Tree(point, type))
@@ -36,6 +38,27 @@ class City:
             #     type = "medium_baobab"
             #else:
             #    type = "small_baobab"
-            type = "medium_oak"
+            type = "mega_jungle"
             new_tree = Tree(point, type)
             self.trees.append(new_tree)
+
+    def add_stall(self, point):
+        self.stalls.append(Stall(point))
+        
+    def add_giga_stall(self, point):
+        self.stalls.append(Stall(point, '','','','','',20,10,8))
+
+    def add_stalls(self):
+        self.stalls.append(Stall((120, 4, 100), 'basic','none','basic','none', 'z_minus'))
+        self.stalls.append(Stall((110, 4, 100), 'stair','basic','back_down','campfire', 'z_minus'))
+        self.stalls.append(Stall((100, 4, 100), 'half_stair','trapdoor','sides_down','trapdoor', 'z_minus'))
+        self.stalls.append(Stall((90, 4, 100), 'slab','fence','sides_down','banner', 'z_minus'))
+        self.stalls.append(Stall((80, 4, 100), 'half_slab','fence_gate','front_down','none'))
+        self.stalls.append(Stall((70, 4, 100), 'stair_slab','stair','front_back_down','none'))
+        self.stalls.append(Stall((60, 4, 100), 'stair_slab','slab','front_back_down','none'))
+
+    def add_stalls2(self):
+        self.stalls.append(Stall((120, 4, 100), 'half_stair','trapdoor','sides_down','trapdoor', 'x_minus'))
+        self.stalls.append(Stall((110, 4, 100), 'half_stair','trapdoor','sides_down','trapdoor', 'z_minus'))
+        self.stalls.append(Stall((100, 4, 100), 'half_stair','trapdoor','sides_down','trapdoor', 'z_plus'))
+        self.stalls.append(Stall((90, 4, 100), 'half_stair','trapdoor','sides_down','trapdoor', 'x_plus'))
