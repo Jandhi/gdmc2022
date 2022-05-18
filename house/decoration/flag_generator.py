@@ -41,7 +41,7 @@ class FlagGenerator(Generator):
             # pole
             px, py, pz = x + x0, y + y0 + node.height, z + z0
             center = (px, py, pz)
-            interface.placeBlock(px, py, pz, 'spruce_log' if y == 0 else f'spruce_fence[{Direction.text[primary_wind_direction]}=true]')
+            interface.placeBlock(px, py, pz, 'spruce_log' if y == 0 else f'spruce_fence[{Direction.cardinal_text[primary_wind_direction]}=true]')
 
             def setRelative(vector, color):
                 interface.placeBlock(vector[0], vector[1], vector[2], f'{color}_wool')

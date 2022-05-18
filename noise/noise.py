@@ -8,6 +8,15 @@ BITNOISE4 = 0x0c1fc20b
 
 T = TypeVar('T')
 
+# returns a new shuffled list
+def shuffle(seed, list : list[T]) -> list[T]:
+    new_list = []
+
+    while len(list) > 0:
+        new_list.append(list.pop(hash(seed, len(list)) % len(list)))
+    
+    return new_list
+
 # returns a random element from list
 def choose(seed, list : list[T]) -> T:
     return list[seed % len(list)]
@@ -24,7 +33,7 @@ def choose_weighted(seed, list : list[tuple[T, int]]) -> T:
     for item, weight in list:
         i -= weight
 
-        if i <= 0:
+        if i < 0:
             return item
 
 # returns true or false based on successes to total odds

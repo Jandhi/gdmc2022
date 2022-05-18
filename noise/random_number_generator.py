@@ -1,4 +1,5 @@
-from noise.random import hash, get_seed
+from noise.random import get_seed
+from noise.noise import hash
 from threading import Lock
 
 # deterministic random number generator with state, built to be thread safe

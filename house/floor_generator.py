@@ -1,21 +1,22 @@
+from directions import Direction
 from generator import Generator
 from house.grid import Grid, GridNode
 from gdpc.interface import Interface
 
+from house.house import House
+
 class FloorGenerator(Generator):
     name = 'Floor Generator'
-    block = 'spruce_planks'
-    grid : Grid = None
 
     def __get_work_amount__(self) -> int:
-        if self.grid:
-            return len(self.grid.nodes)
+        if self.house.grid:
+            return len(self.house.grid.nodes)
 
     def __generate__(self, interface : Interface):
-        if not self.grid:
+        if not self.house.grid:
             return
         
-        for node in self.grid.nodes.values():
+        for node in self.house.grid.nodes.values():
             self.generate_for_node(node, interface)
             self.bar.next()
 
@@ -24,7 +25,16 @@ class FloorGenerator(Generator):
         x1, x2 = x0 + 1, x0 + node.width - 1
         z1, z2 = z0 + 1, z0 + node.depth - 1
 
+        if node.get_neighbour(Direction.x_plus):
+            x2 += 1
+        if node.get_neighbour(Direction.x_minus):
+            x1 -= 1
+        if node.get_neighbour(Direction.z_plus):
+            z2 += 1
+        if node.get_neighbour(Direction.z_minus):
+            z1 -= 1
+
         for x in range(x1, x2):
             for z in range(z1, z2):
-                interface.placeBlock(x, y0, z, self.block)
+                node.palette.floor.place_block(interface, x, y0, z)
         
