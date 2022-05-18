@@ -4,7 +4,7 @@ from noise.random import recursive_hash
 from structures.structure import dimensions as dimensions_list, structures_by_dim
 from generator import Generator
 from gdpc.interface import Interface
-from load_structures import load_structures
+from structures.load_structures import load_structures
 
 from terrain.buildmap import NOTHING, STRUCTURE
 
