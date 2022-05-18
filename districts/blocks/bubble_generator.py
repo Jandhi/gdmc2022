@@ -138,8 +138,8 @@ class BubbleGenerator(Generator):
             hmap=self.hmap, 
             wmap=self.wmap, 
             bmap=self.bmap,
-            road_material = Block('bricks').material(),
-            slab_material = Block('brick_slab').material(),
+            road_material = self.road_material,
+            slab_material = self.slab_material,
             bridge_material = MixedMaterial(
                 [Block('oak_planks').material()]
             ),
@@ -268,8 +268,8 @@ class BubbleGenerator(Generator):
             hmap=self.hmap, 
             wmap=self.wmap,
             bmap=self.bmap, 
-            road_material = Block('bricks').material(),
-            slab_material = Block('brick_slab').material(),
+            road_material = self.road_material,
+            slab_material = self.slab_material,
             bridge_material = MixedMaterial(
                 [Block('oak_planks').material()]
             ),

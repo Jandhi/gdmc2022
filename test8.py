@@ -12,6 +12,7 @@ from pathfinding.roadpaths import BRIDGE, ROAD, ROAD_SLAB, get_cost, create_get_
 from terrain.buildmap import get_build_map
 from terrain.watermap import get_water_map
 from gdpc.direct_interface import runCommand
+from structures.structure_placer import StructurePlacer
 
 area = list(requestPlayerArea(200, 200))
 area[1] = 3
@@ -28,36 +29,14 @@ omap = slice.heightmaps['OCEAN_FLOOR']
 wmap = get_water_map(hmap, slice, origin)   
 bmap = get_build_map(hmap)
 
-mixed_road = MixedMaterial(
-    [
-        Block('cobblestone').material(),
-        Block('gravel').material(),
-        Block('stone').material(),
-        Block('stone_bricks').material()
-    ]
-)
-
-mixed_slab = MixedMaterial(
-    [
-        Block('cobblestone_slab').material(),
-        Block('stone_slab').material(),
-        Block('stone_brick_slab').material()
-    ]
-)
-
-BubbleGenerator(
+StructurePlacer(
     area=area, 
+    slice=slice, 
     hmap=hmap, 
+    omap=omap, 
     wmap=wmap, 
-    bmap=bmap, 
-    point_amount=20,
-    road_material=mixed_road,
-    slab_material=mixed_slab,
+    bmap=bmap,
+    point=(100,100),
 ).generate(interface)
-
-edges = find_edges(bmap)
-
-for point in edges:
-    HousePlacer(area=area, hmap=hmap, wmap=wmap, bmap=bmap).attempt_placement(point, interface)
 
 interface.sendBlocks()
