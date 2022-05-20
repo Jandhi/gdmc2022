@@ -1,7 +1,7 @@
 from directions import Direction
 from noise.noise import shuffle
 from noise.random import recursive_hash
-from structures.structure import dimensions as dimensions_list, structures_by_dim
+from structures.structure import LARGE, MEDIUM, dimensions as dimensions_list, structures_by_dim
 from generator import Generator
 from gdpc.interface import Interface
 from structures.load_structures import load_structures
@@ -14,9 +14,16 @@ load_structures()
 
 class StructurePlacer(Generator):
     name = 'Structure Placer'
+    limits = {
+        MEDIUM : 5,
+        LARGE  : 2
+    }
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
+
+        self.placed_structures = []
+        self.counts = {0 for dms in dimensions_list}
 
     def __generate__(self, interface: Interface):
         self.attempt_placement(self.point, interface)
@@ -28,6 +35,10 @@ class StructurePlacer(Generator):
 
             # largest first
             for dms in dimensions_list[::-1]:
+                # don't place if we reached limit of that size
+                if dms in self.limits and self.counts[dms] >= self.limits[dms]:
+                    continue
+
                 origin = get_origin(point, direction, dms)
 
                 if not is_in_bounds(origin, dms, self.hmap):
@@ -53,7 +64,7 @@ class StructurePlacer(Generator):
                             if DEBUG_GROUND:
                                 interface.placeBlock(px, y, pz, 'warped_planks')
                     
-                    structure(
+                    generator = structure(
                         origin=origin,
                         y=y,
                         area=self.area, 
@@ -61,7 +72,11 @@ class StructurePlacer(Generator):
                         wmap=self.wmap,
                         bmap=self.bmap,
                         slice=self.slice,
-                    ).generate(interface)
+                    )
+                    
+                    generator.generate(interface)
+                    self.placed_structures.append(generator)
+                    self.counts[dms] += 1
 
                     return
 

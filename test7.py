@@ -50,6 +50,8 @@ BubbleGenerator(
     hmap=hmap, 
     wmap=wmap, 
     bmap=bmap, 
+    omap=omap,
+    slice=slice,
     point_amount=20,
     road_material=mixed_road,
     slab_material=mixed_slab,

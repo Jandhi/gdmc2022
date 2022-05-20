@@ -7,6 +7,7 @@ from palette.block import Block
 from palette.material import MixedMaterial
 from pathfinding.highway_generator import HighwayGenerator
 from pathfinding.pathfinder import get_web
+from structures.structure_placer import StructurePlacer
 from util.point_utils import distance_2d, neighbours_2d
 
 from noise.random import recursive_hash
@@ -39,6 +40,15 @@ class BubbleGenerator(Generator):
 
         self.bubbles : list[Bubble] = None
         self.bubble_layout : BubbleLayout = None
+
+        self.placer = StructurePlacer(
+            area=self.area, 
+            slice=self.slice, 
+            hmap=self.hmap, 
+            omap=self.omap, 
+            wmap=self.wmap, 
+            bmap=self.bmap
+        )
 
     def __generate__(self, interface : Interface):
         bubble_map = [[None for z in range(self.depth)] for x in range(self.width)]
