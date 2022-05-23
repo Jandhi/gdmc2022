@@ -10,7 +10,7 @@ class Stall:
     palette: Palette
 
     #p1 and p2 are the starting and end points of the rectangle that forms the road
-    def __init__(self, origin, counter: str = 'basic', side: str = 'basic', roof: str = 'basic', overhang: str = 'none', direction: Direction = 'z_minus', length: int=5, depth: int = 4, height: int = 4) -> None:
+    def __init__(self, origin, counter: str = 'basic', side: str = 'basic', roof: str = 'basic', overhang: str = 'none', direction: Direction = 'z_minus', length: int=5, depth: int = 4, height: int = 5) -> None:
         self.origin = origin
         self.overhang = overhang
         self.counter = counter
@@ -26,7 +26,10 @@ class Stall:
 
         self.palette = Palette()
 
-        if side == 'none' or side == 'trapdoor' or side == 'fence_gate':
+        if self.counter == 'random':
+            self.randomize_stall()
+
+        if self.side == 'none' or self.side == 'trapdoor' or self.side == 'fence_gate':
             seed()
             chance_of_back_counter = randint(1,5)
             if chance_of_back_counter < 5:
@@ -34,6 +37,9 @@ class Stall:
 
         self.goods = 'none'
         self.set_random_goods()
+
+        self.randomize_colour()
+        
 
     def get_origin(self):
         return self.origin
@@ -69,7 +75,7 @@ class Stall:
 
     def set_random_goods(self):
         seed()
-        a = randint(1,8) #start at 0 if you want a chance of empty stalls
+        a = randint(0,16) #start at 0 if you want a chance of empty stalls
         if a == 1:
             self.goods = Flower_Shop()
         elif a == 2:
@@ -85,8 +91,88 @@ class Stall:
         elif a == 7:
             self.goods = Shulker_Shop()
         elif a == 8:
-            self.goods = Food_Shop()
+            self.goods = Fruit_Shop()
         elif a == 9:
             self.goods = Armour_Shop()
         elif a == 10:
-            self.goods = Wool_Shop()
+            self.goods = Bakery_Shop()
+        elif a == 11:
+            self.goods = Bell_Pepper_Shop()
+        elif a == 12:
+            self.goods = Japanese_Shop()
+        elif a == 13:
+            self.goods = Honey_Shop()
+        elif a == 14:
+            self.goods = Donut_Shop()
+        elif a == 15:
+            self.goods = Butcher_Shop()
+        elif a == 16:
+            self.goods = Alcohol_Shop()
+
+    def randomize_stall(self):
+        seed()
+        a = randint(1,6)
+        if a == 1:
+            self.counter = 'basic'
+        elif a == 2:
+            self.counter = 'half_stair'
+        elif a == 3:
+            self.counter = 'stair'
+        elif a == 4:
+            self.counter = 'half_slab'
+        elif a == 5:
+            self.counter = 'stair_slab'
+        elif a == 6:
+            self.counter = 'slab'
+
+        seed()
+        a = randint(1,6)
+        if a == 1:
+            self.side = 'basic'
+        elif a == 2:
+            self.side = 'fence'
+        elif a == 3:
+            self.side = 'fence_gate'
+        elif a == 4:
+            self.side = 'trapdoor'
+        elif a == 5:
+            self.side = 'stair'
+        elif a == 6:
+            self.side = 'slab'
+
+        seed()
+        a = randint(1,6)
+        if a == 1:
+            self.roof = 'basic'
+        elif a == 2:
+            self.roof = 'back_down'
+        elif a == 3:
+            self.roof = 'sides_down'
+        elif a == 4:
+            self.roof = 'front_down'
+        elif a == 5:
+            self.roof = 'front_back_down'
+
+        seed()
+        a = randint(1,4)
+        if a == 1:
+            self.overhang = 'none'
+        elif a == 2:
+            self.overhang = 'trapdoor'
+        elif a == 3:
+            self.overhang = 'banner'
+        elif a == 4:
+            self.overhang = 'campfire'
+        
+    def randomize_colour(self):
+        seed()
+        colour_list = self.palette.colour_list
+        a = randint(0, len(colour_list)-1)
+        choice1 = colour_list[a]
+        self.palette.market_wool_1 = BasicMaterial(Block(f'{choice1}_wool'))
+        self.palette.market_banner_1 = BasicMaterial(Block(f'{choice1}_wall_banner'))
+        seed()
+        a = randint(0, len(colour_list)-1)
+        choice2 = colour_list[a]
+        self.palette.market_wool_2 = BasicMaterial(Block(f'{choice2}_wool'))
+        self.palette.market_banner_2 = BasicMaterial(Block(f'{choice2}_wall_banner'))

@@ -38,7 +38,7 @@ class Direction:
         z_minus : (0, 0, -1)
     }
 
-    text = {
+    cardinal_text = {
         north : 'north',
         east : 'east',
         south : 'south',

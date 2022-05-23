@@ -7,6 +7,7 @@ class Block:
     name : str
     is_log : bool = False
     base_direction : str = None
+    nbt : str = None
 
     def get_facing(self, direction):
         true_direction = self.get_true_direction(direction)

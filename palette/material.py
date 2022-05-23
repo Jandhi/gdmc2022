@@ -1,9 +1,10 @@
-from gdpc.interface import Interface
+from gdpc.interface import Interface, runCommand
 from noise.random import hash_vector
 from noise.noise import choose, choose_weighted
 from palette.block import Block
 from random import seed
 from random import randint
+from directions import Direction
 
 class Material:
     def place_block(self, interface: Interface, seed: int, x: int, y: int, z: int, direction=None):
@@ -55,3 +56,42 @@ class WeightedMaterial(Material):
 
     def place_block(self, interface: Interface, x: int, y: int, z: int, direction=None, seed: int=None):
         choose_weighted(seed, self.materials).place_block(interface, x, y, z, direction, seed)
+
+#material class that sends place_block as a setblock command to minecraft, used currently only for placing player heads
+class SetBlockMaterial(Material):
+    def __init__(self, block : Block) -> None:
+        self.block = block
+
+    def place_block(self, interface: Interface, x: int, y: int, z: int, direction=None, Seed: int=None):
+        x, y, z = interface.local2global(x, y, z)
+        block = self.block.get_facing(direction)
+        #setting correct direction
+        if direction == Direction.x_minus:
+            block = block[:11] + '[rotation=12]' + block[11:len(block)]
+        elif direction == Direction.x_plus:
+            block = block[:11] + '[rotation=4]' + block[11:len(block)]
+        elif direction == Direction.z_plus:
+            block = block[:11] + '[rotation=8]' + block[11:len(block)]
+        command = f'setblock {x} {y} {z} minecraft:{block} replace'
+        runCommand(command)
+
+#material class that sends place_block as a summon command to minecraft, used mainly for placing entities
+class SummonMaterial(Material):
+    def __init__(self, block : Block) -> None:
+        self.block = block
+
+    def place_block(self, interface: Interface, x: int, y: int, z: int, direction=None, Seed: int=None):
+        x, y, z = interface.local2global(x, y, z)
+        block = self.block.name
+        if direction == Direction.x_minus:
+            self.block.nbt = self.block.nbt[:len(self.block.nbt)-1] + ',Rotation:[90.0f]}'
+        elif direction == Direction.x_plus:
+            self.block.nbt = self.block.nbt[:len(self.block.nbt)-1] + ',Rotation:[-90.0f]}'
+        elif direction == Direction.z_minus:
+            self.block.nbt = self.block.nbt[:len(self.block.nbt)-1] + ',Rotation:[180.0f]}'
+
+        if not self.block.nbt:
+            command = f'/summon minecraft:{block} {x} {y} {z}'
+        else: 
+            command = f'/summon minecraft:{block} {x} {y} {z} {self.block.nbt}'
+        runCommand(command)

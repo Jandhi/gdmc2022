@@ -1,7 +1,6 @@
 from lib2to3.pgen2.pgen import generate_grammar
 from generator import Generator
 from market.stall import Stall
-from city.city import City
 from gdpc.interface import Interface
 from palette.block import Block
 from palette.palette import Palette
@@ -12,17 +11,17 @@ from directions import Direction
 
 class StallGenerator(Generator):
     name = 'Stall Generator'
-    city : City = None
+    stalls : Stall = []
 
     def __get_work_amount__(self) -> int:
-        if self.city:
-            return len(self.city.stalls)
+        if self.stalls:
+            return len(self.stalls)
 
     def __generate__(self, interface : Interface):
-        if not self.city:
+        if not self.stalls:
             return
 
-        for stall in self.city.stalls:
+        for stall in self.stalls:
             self.generate_stall(stall, interface)
             self.bar.next()
 
@@ -128,10 +127,10 @@ class StallGenerator(Generator):
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
             else:
                 for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
@@ -144,18 +143,18 @@ class StallGenerator(Generator):
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
         elif stall.counter == 'stair':
             for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                 if swap:
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                     stall.add_counter_space((x0,y0+1,a))
                 else:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                     stall.add_counter_space((a,y0+1,z0))
         elif stall.counter == 'slab':
             for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
@@ -210,17 +209,17 @@ class StallGenerator(Generator):
                 for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                     if (a-l0)%2==0 and a<=stall.length-2:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
                     elif (a-l0)%2==1 and a>=stall.length-2:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
@@ -233,10 +232,10 @@ class StallGenerator(Generator):
                 for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                     if (a-l0)%2==0:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
@@ -266,37 +265,37 @@ class StallGenerator(Generator):
         elif stall.side == 'fence': 
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_fence.block.name}[{Direction.text[Direction.opposite[stall.direction]]}=true,{Direction.text[stall.direction]}=true]')
-                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_fence.block.name}[{Direction.text[Direction.opposite[stall.direction]]}=true,{Direction.text[stall.direction]}=true]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_fence.block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
+                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_fence.block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
                 else:
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_fence.block.name}[{Direction.text[Direction.opposite[stall.direction]]}=true,{Direction.text[stall.direction]}=true]')
-                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_fence.block.name}[{Direction.text[Direction.opposite[stall.direction]]}=true,{Direction.text[stall.direction]}=true]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_fence.block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
+                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_fence.block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
         elif stall.side == 'fence_gate': 
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.text[Direction.right[stall.direction]]}]')
-                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.text[Direction.left[stall.direction]]}]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}]')
+                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}]')
                 else:
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.text[Direction.right[stall.direction]]}]')
-                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.text[Direction.left[stall.direction]]}]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}]')
+                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}]')
         elif stall.side == 'trapdoor':
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
-                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.text[stall.direction]}, half=top]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}, half=top]')
                 else: 
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.text[Direction.opposite[stall.direction]]}, half=top]')
-                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.text[stall.direction]}, half=top]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}, half=top]')
         elif stall.side == 'stair': 
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.right[stall.direction]]}, half=top]')
-                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.left[stall.direction]]}, half=top]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}, half=top]')
+                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}, half=top]')
                     stall.add_counter_space((a,y0+1,z0))
                     stall.add_counter_space((a,y0+1,z0+(stall.length-1)*l_dir))
                 else:
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.right[stall.direction]]}, half=top]')
-                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.text[Direction.left[stall.direction]]}, half=top]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}, half=top]')
+                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}, half=top]')
                     stall.add_counter_space((x0,y0+1,a))
                     stall.add_counter_space((x0+(stall.length-1)*l_dir,y0+1,a))
         elif stall.side == 'slab': 
@@ -439,38 +438,38 @@ class StallGenerator(Generator):
             for a in range(l0,l0+stall.length*l_dir, l_dir):
                 if stall.roof == 'front_back_down' or stall.roof == 'front_down' or (stall.roof == 'sides_down' and (a == l0 or a == l0+(stall.length-1)*l_dir)):
                     if swap:
-                        interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.text[stall.direction]}]')
+                        interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                     else:
-                        interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.text[stall.direction]}]')
+                        interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                 else:
                     if swap:
-                        interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.text[stall.direction]}]')
+                        interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                     else:
-                        interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.text[stall.direction]}]')
+                        interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
         elif stall.overhang == 'banner':
             for a in range(l0,l0+stall.length*l_dir, l_dir):
                 if (a-x0)%2==0:
                     if stall.roof == 'front_back_down' or stall.roof == 'front_down' or (stall.roof == 'sides_down' and (a == l0 or a == l0+(stall.length-1)*l_dir)):
                         if swap:
-                            interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_banner_1.block.name}[facing={Direction.text[stall.direction]}]')
+                            interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                         else:
-                            interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.market_banner_1.block.name}[facing={Direction.text[stall.direction]}]')
+                            interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                     else:
                         if swap:
-                            interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_banner_1.block.name}[facing={Direction.text[stall.direction]}]')
+                            interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                         else:
-                            interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_banner_1.block.name}[facing={Direction.text[stall.direction]}]')
+                            interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                 else:
                     if stall.roof == 'front_back_down' or stall.roof == 'front_down' or (stall.roof == 'sides_down' and (a == l0 or a == l0+(stall.length-1)*l_dir)):
                         if swap:
-                            interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_banner_2.block.name}[facing={Direction.text[stall.direction]}]')
+                            interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                         else:
-                            interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.market_banner_2.block.name}[facing={Direction.text[stall.direction]}]')
+                            interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                     else:
                         if swap:
-                            interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_banner_2.block.name}[facing={Direction.text[stall.direction]}]')
+                            interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                         else:
-                            interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_banner_2.block.name}[facing={Direction.text[stall.direction]}]')
+                            interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
         elif stall.overhang == 'campfire':
             for a in range(l0,l0+stall.length*l_dir, l_dir):
                 if stall.roof == 'front_back_down' or stall.roof == 'front_down' or (stall.roof == 'sides_down' and (a == l0 or a == l0+(stall.length-1)*l_dir)):
@@ -491,7 +490,10 @@ class StallGenerator(Generator):
             generation_chance = randint(1, 4)
             if generation_chance < 4:
                 good = stall.get_counter_good()
-                good.place_block(interface, x, y, z)
+                if good.block.name[:11] == 'player_head': #player head direction
+                    good.place_block(interface, x, y, z, stall.direction)
+                else:
+                    good.place_block(interface, x, y, z)
         
         if stall.has_floor_goods():
             for point in stall.floor_space:
@@ -499,4 +501,7 @@ class StallGenerator(Generator):
                 generation_chance = randint(1, 4)
                 if generation_chance < 4:
                     good = stall.get_floor_good()
-                    good.place_block(interface, x, y, z)
+                    if good.block.name == 'armor_stand': #armour stand rotation
+                        good.place_block(interface, x, y, z, stall.direction)
+                    else:
+                        good.place_block(interface, x, y, z)
