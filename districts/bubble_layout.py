@@ -16,7 +16,6 @@ class BubbleLayout:
         self.neighbour_count = [
             [0 for district in districts] for other in districts
         ]
-
     def set_neighbours(self, district1, district2):
         index1 = self.districts.index(district1)
         index2 = self.districts.index(district2)

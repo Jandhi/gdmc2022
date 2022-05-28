@@ -14,6 +14,7 @@ class Block:
     is_pillar : bool = False
     is_stairs : bool = False
     base_direction : str = None
+    nbt : str = None
 
     def new(self):
         self.attributes = {}

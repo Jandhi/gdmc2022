@@ -10,7 +10,10 @@ from house.roof.tower_roof import TowerRoofGenerator
 from house.walls.wall_generator import WallGenerator
 from gdpc.interface import requestPlayerArea, Interface, setBuildArea
 
-area = list(requestPlayerArea(66, 66))
+size_x = 200
+size_z = 200
+
+area = list(requestPlayerArea(size_x, size_z))
 area[1] = 3
 area[4] = 200
 setBuildArea(*area)
@@ -42,8 +45,8 @@ grid.add_node(0, 1, 4)
 grid.add_node(1, 0, 4)
 house4 = House(grid)
 
-Clear(height_limit=32, area=(0, 0, 66, 66), y=4).generate(interface)
-CheckerBoardGenerator(tile_width=grid.width, tile_depth=grid.depth, area=(1, 1, 65, 65), y=3).generate(interface)
+Clear(height_limit=32, area=(0, 0, size_z, size_z), y=4).generate(interface)
+CheckerBoardGenerator(tile_width=grid.width, tile_depth=grid.depth, area=(1, 1, size_z-1, size_z-1), y=3).generate(interface)
 
 for house in [house1, house2, house3, house4]:
     WallGenerator(house=house, grid=grid).generate(interface)

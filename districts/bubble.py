@@ -21,4 +21,4 @@ class Bubble:
         z = (self.size * az1 + bubble.size * az2) / (self.size + bubble.size)
 
         self.average_point = (x, z)
-        self.size += bubble.size 
+        self.size += bubble.size

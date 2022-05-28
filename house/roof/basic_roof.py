@@ -2,8 +2,11 @@ from gdpc.interface import Interface
 from directions import Direction
 from house.grid import GridNode
 from house.roof.roof_design import RoofDesign
+<<<<<<< HEAD
 from palette.palette import ROOF_PRIMARY, ROOF_SECONDARY
 from palette.sets.block_types import BLOCK, STAIRS
+=======
+>>>>>>> a3980a71e0b167cc2bb6932aa4855d646adecd66
 
 class BasicRoof(RoofDesign):
     def generate_roof(self, interface: Interface, node: GridNode):

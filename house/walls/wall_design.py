@@ -26,7 +26,6 @@ class RecededWall(WallDesign):
         for point in points:
             diffVector = Direction.vectors[Direction.opposite[direction]]
             x, y, z = sum_vectors(point, diffVector)
-
             material = node.palette.get_material(WALL_PRIMARY, BLOCK) if y != 1 else node.palette.get_material(WALL_SECONDARY, BLOCK)
 
             if x == 0 and not node.get_neighbour(Direction.x_minus):
