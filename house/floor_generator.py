@@ -1,6 +1,6 @@
 from directions import Direction
 from generator import Generator
-from house.grid import Grid, GridNode
+from house.grid import BUILDING, Grid, GridNode
 from gdpc.interface import Interface
 
 from house.house import House
@@ -19,6 +19,9 @@ class FloorGenerator(Generator):
             return
         
         for node in self.house.grid.nodes.values():
+            if node.type != BUILDING:
+                continue
+
             self.generate_for_node(node, interface)
             self.bar.next()
 

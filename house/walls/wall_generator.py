@@ -3,7 +3,7 @@ from house.house import House
 from house.walls.pillars_generator import WallPillarDesign
 from house.walls.wall_design import BasicWall, RecededWall
 from generator import Generator
-from house.grid import GridNode
+from house.grid import BUILDING, GridNode
 from gdpc.interface import Interface
 
 class WallGenerator(Generator):
@@ -19,6 +19,9 @@ class WallGenerator(Generator):
             return
         
         for node in self.house.grid.nodes.values():
+            if node.type != BUILDING:
+                continue
+
             self.generate_for_node(node, interface)
             self.bar.next()
 

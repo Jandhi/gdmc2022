@@ -13,7 +13,7 @@ from terrain.buildmap import get_build_map
 from terrain.watermap import get_water_map
 from gdpc.direct_interface import runCommand
 
-area = list(requestPlayerArea(50, 50)) 
+area = list(requestPlayerArea(100, 100)) 
 area[1] = 3
 area[4] = 200
 origin = (area[0], area[1], area[2])
@@ -58,7 +58,7 @@ bbg = BubbleGenerator(
 )
 bbg.generate(interface)
 
-edges = find_edges(bmap)
+edges = find_edges(bmap, hmap)
 
 for point in edges:
     HousePlacer(area=area, hmap=hmap, wmap=wmap, bmap=bmap).attempt_placement(point, interface)

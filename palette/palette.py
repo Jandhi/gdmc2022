@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from palette.design.design import LOW, STONE_AMOUNT
+from palette.material import Material
 
 # domains
 WALL_PRIMARY = 'wall_primary'
@@ -23,7 +24,7 @@ class Palette:
         if STONE_AMOUNT not in self.data:
             self.data[STONE_AMOUNT] = LOW
 
-    def get_material(self, domain, block):
+    def get_material(self, domain, block) -> Material:
         order = self.__get_resolution_order(domain)
 
         for dm in order:

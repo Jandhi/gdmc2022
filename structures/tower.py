@@ -14,12 +14,11 @@ class Tower(Structure):
     max_water = 1.1
 
     def __generate__(self, interface: Interface):
-
         x, z = self.origin
         y = self.y
         width, depth = self.dimensions
 
-        cx, cz = x + 3, z + 3 
+        cx, cz = x + width//2, z + depth//2 
 
         # supports
         for dx, dz, dir in (

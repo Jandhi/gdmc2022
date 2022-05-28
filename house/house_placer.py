@@ -1,7 +1,7 @@
 
 from generator import Generator
 from gdpc.interface import Interface
-from house.grid import Grid, GridNode, node_to_world_coords
+from house.grid import BUILDING, Grid, GridNode, node_to_world_coords
 from house.house_generator import HouseGenerator
 from house.house import House
 
@@ -14,7 +14,7 @@ class HousePlacer(Generator):
     grid_size = (7, 5, 7)
 
     def attempt_placement(self, point, interface):
-        x, z = point
+        x, y, z = point
 
         for px, pz in shuffle(rhash(x, z), [
             (x, z),
@@ -23,7 +23,7 @@ class HousePlacer(Generator):
             (x - self.grid_size[0] + 1, z - self.grid_size[2] + 1)
         ]):
             if self.is_clear((px, pz)):
-                grid = self.create_grid((px, pz)) 
+                grid = self.create_grid((px, y, pz)) 
                 self.mark_grid(grid)
                 HouseGenerator(area=self.area, house=House(grid)).generate(interface)
                 return
@@ -55,8 +55,7 @@ class HousePlacer(Generator):
         return True
 
     def create_grid(self, point):
-        px, pz = point
-        py = self.hmap[px][pz] - 1
+        px, py, pz = point
         grid = Grid((px, py, pz), self.grid_size)
 
         node_queue = [(0, 0, 0)]
@@ -79,13 +78,13 @@ class HousePlacer(Generator):
 
             height = 2
 
-            if odds(rhash(seed, 2), 1, 5):
+            if odds(rhash(seed, 2), 1, 5): # 1/5 chance of higher
                 height += 1
-            elif height > 1 and odds(rhash(seed, 3), 1, 3):
+            elif height > 1 and odds(rhash(seed, 3), 1, 3): # 4/15 chance of lower
                 height -= 1
             
             for py in range(height):
-                grid.add_node(x, py, z)
+                grid.add_node(x, py, z, BUILDING)
             
             for p in shuffle(rhash(seed, 4), [
                 (x + 1, y, z),

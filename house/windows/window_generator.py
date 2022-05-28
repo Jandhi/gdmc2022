@@ -1,7 +1,7 @@
 from directions import Direction
 from house.house import House
 from generator import Generator
-from house.grid import GridNode
+from house.grid import BUILDING, GridNode
 from gdpc.interface import Interface
 from noise.random import odds, recursive_hash
 from palette.palette import WOOD_ACCENT
@@ -22,6 +22,9 @@ class WindowGenerator(Generator):
             return
         
         for node in self.house.grid.nodes.values():
+            if node.type != BUILDING:
+                continue
+
             self.generate_for_node(node, interface)
             self.bar.next()
 

@@ -2,10 +2,13 @@ from directions import Direction
 from palette.palette import Palette
 from vector import sum_vectors
 
+BUILDING = 'building'
+GARDEN = 'garden'
+
 class GridNode:
     palette : Palette
 
-    def __init__(self, x, y, z, grid) -> None:
+    def __init__(self, x, y, z, grid, type : str) -> None:
         self.x = x
         self.y = y
         self.z = z
@@ -14,6 +17,7 @@ class GridNode:
         self.width = grid.width
         self.height = grid.height
         self.depth = grid.depth
+        self.type = type
 
     def get_neighbour(self, direction):
         distance_vector = Direction.vectors[direction]
@@ -87,5 +91,5 @@ class Grid:
         self.width, self.height, self.depth = size
         self.nodes = {}
 
-    def add_node(self, x, y, z) -> GridNode:
-        self.nodes[(x, y, z)] = GridNode(x, y, z, self)
+    def add_node(self, x, y, z, type) -> GridNode:
+        self.nodes[(x, y, z)] = GridNode(x, y, z, self, type)

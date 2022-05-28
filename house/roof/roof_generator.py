@@ -1,5 +1,5 @@
 from generator import Generator
-from house.grid import Grid, GridNode
+from house.grid import BUILDING, Grid, GridNode
 from directions import Axis, Direction
 from gdpc.interface import Interface
 
@@ -19,6 +19,9 @@ class RoofGenerator(Generator):
             return
         
         for node in self.house.grid.nodes.values():
+            if node.type != BUILDING:
+                continue
+
             self.generate_for_node(node, interface)
             self.bar.next()
 
