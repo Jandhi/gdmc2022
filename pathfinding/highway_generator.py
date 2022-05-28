@@ -94,7 +94,7 @@ class HighwayGenerator(Generator):
             if (x, z) in self.existing_tiles:
                 cost -= 2 # reuse discount!
             
-            if self.wmap[x][y]:
+            if self.wmap[x][z]:
                 cost += 3 # bridge cost
             
             ground = self.hmap[x][z] - 1
