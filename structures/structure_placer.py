@@ -71,6 +71,7 @@ class StructurePlacer(Generator):
                         wmap=self.wmap,
                         bmap=self.bmap,
                         slice=self.slice,
+                        palette=self.palette,
                     )
                     
                     generator.generate(interface)

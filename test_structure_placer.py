@@ -1,17 +1,10 @@
 from gdpc.interface import requestPlayerArea, Interface, setBuildArea
 from gdpc.worldLoader import WorldSlice
-from districts.blocks.bubble_generator import BubbleGenerator
-from districts.edge_finder import find_edges
-from house.house_placer import HousePlacer
 from noise.random import set_seed
 from noise.noise import recursive_hash
-from palette.block import Block
-from palette.material import MixedMaterial
-from pathfinding.pathfinder import get_path
-from pathfinding.roadpaths import BRIDGE, ROAD, ROAD_SLAB, get_cost, create_get_neighbours_function
+from palette.sets.biome_sets import *
 from terrain.buildmap import get_build_map
 from terrain.watermap import get_water_map
-from gdpc.direct_interface import runCommand
 from structures.structure_placer import StructurePlacer
 
 area = list(requestPlayerArea(200, 200))
@@ -37,6 +30,10 @@ StructurePlacer(
     wmap=wmap, 
     bmap=bmap,
     point=(100,100),
+    palette=create_palette(combine(
+        desert_biome_set, 
+        oak_biome_set
+    ))
 ).generate(interface)
 
 interface.sendBlocks()
