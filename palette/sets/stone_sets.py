@@ -1,16 +1,16 @@
 from re import M
 from palette.block import create_block
 from palette.sets.block_types import *
-
+from palette.material import BasicMaterial
 
 def make_set(dict):
-    return {name : create_block(block).material() for name, block in dict.items()}
+    return {name : BasicMaterial(create_block(block)) for name, block in dict.items()}
 
 # BASIC
 
 stone_set = make_set({
     BLOCK : 'stone',
-    ACCENT : 'polished_andesite',
+    DECORATED : 'polished_andesite',
     CRACKED : 'cobblestone',
     STAIRS : 'stone_stairs',
     SLAB : 'stone_slab',
@@ -40,7 +40,7 @@ smooth_stone_set = make_set({
 stone_bricks_set = make_set({
     BLOCK : 'stone_bricks',
     CRACKED : 'cracked_stone_bricks',
-    ACCENT : 'chiseled_stone_bricks',
+    DECORATED : 'chiseled_stone_bricks',
     STAIRS : 'stone_brick_stairs',
     SLAB : 'stone_brick_slab',
     FENCE : 'stone_brick_wall'
@@ -49,7 +49,7 @@ stone_bricks_set = make_set({
 mossy_stone_bricks_set = make_set({
     BLOCK : 'mossy_stone_bricks',
     CRACKED : 'cracked_stone_bricks',
-    ACCENT : 'chiseled_stone_bricks',
+    DECORATED : 'chiseled_stone_bricks',
     STAIRS : 'mossy_stone_brick_stairs',
     SLAB : 'mossy_stone_brick_slab',
     FENCE : 'mossy_stone_brick_wall'
@@ -59,7 +59,7 @@ mossy_stone_bricks_set = make_set({
 
 smooth_sandstone_set = make_set({
     BLOCK : 'smooth_sandstone',
-    ACCENT : 'chiseled_sandstone',
+    DECORATED : 'chiseled_sandstone',
     CRACKED : 'sandstone',
     PILLAR : 'cut_sandstone',
     STAIRS : 'smooth_sandstone_stairs',
@@ -69,7 +69,7 @@ smooth_sandstone_set = make_set({
 
 sandstone_set = make_set({
     BLOCK : 'sandstone',
-    ACCENT : 'chiseled_sandstone',
+    DECORATED : 'chiseled_sandstone',
     PILLAR : 'cut_sandstone',
     STAIRS : 'sandstone_stairs',
     SLAB : 'sandstone_slab',
@@ -78,7 +78,7 @@ sandstone_set = make_set({
 
 cut_sandstone_set = make_set({
     BLOCK : 'cut_sandstone',
-    ACCENT : 'chiseled_sandstone',
+    DECORATED : 'chiseled_sandstone',
     CRACKED : 'sandstone',
     PILLAR : 'cut_sandstone',
     STAIRS : 'smooth_sandstone_stairs',
@@ -88,7 +88,7 @@ cut_sandstone_set = make_set({
 
 smooth_red_sandstone_set = make_set({
     BLOCK : 'smooth_red_sandstone',
-    ACCENT : 'chiseled_red_sandstone',
+    DECORATED : 'chiseled_red_sandstone',
     CRACKED : 'red_sandstone',
     PILLAR : 'cut_red_sandstone',
     STAIRS : 'smooth_red_sandstone_stairs',
@@ -98,7 +98,7 @@ smooth_red_sandstone_set = make_set({
 
 red_sandstone_set = make_set({
     BLOCK : 'red_sandstone',
-    ACCENT : 'chiseled_red_sandstone',
+    DECORATED : 'chiseled_red_sandstone',
     PILLAR : 'cut_red_sandstone',
     STAIRS : 'red_sandstone_stairs',
     SLAB : 'red_sandstone_slab',
@@ -107,7 +107,7 @@ red_sandstone_set = make_set({
 
 cut_red_sandstone_set = make_set({
     BLOCK : 'cut_red_sandstone',
-    ACCENT : 'chiseled_red_sandstone',
+    DECORATED : 'chiseled_red_sandstone',
     CRACKED : 'red_sandstone',
     PILLAR : 'cut_red_sandstone',
     STAIRS : 'smooth_red_sandstone_stairs',

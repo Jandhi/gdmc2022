@@ -1,9 +1,13 @@
 
 from directions import Direction
+from palette.palette import STONE_ACCENT, Palette
+from palette.sets.block_types import DECORATED, BLOCK, SLAB, STAIRS
+from palette.sets.set_categories import STONE
 from structures.structure import SMALL, Structure
 from gdpc.interface import Interface
 
 class Tower(Structure):
+    palette : Palette
     name = 'Tower'
     dimensions = SMALL
     tower_height = 20
@@ -25,14 +29,16 @@ class Tower(Structure):
             (0, -3, Direction.z_minus)
         ):
             for dy in range(1, 9):
-                block = 'stone_bricks'
+                material = self.palette.get_material(STONE_ACCENT, BLOCK)
+                attrs = {}
 
                 if dy == 1:
-                    block = 'polished_andesite'
+                    material = self.palette.get_material(STONE, DECORATED)
                 elif dy == 8:
-                    block = f'stone_brick_stairs[facing={Direction.cardinal_text[Direction.opposite[dir]]}]'
+                    material = self.palette.get_material(STONE_ACCENT, STAIRS)
+                    attrs = {'facing' : Direction.cardinal_text[Direction.opposite[dir]]}
 
-                interface.placeBlock(cx + dx, y + dy, cz + dz, block)
+                material.place_block(interface, cx + dx, y + dy, cz + dz, attributes=attrs)
 
         # tube
         for dy in range(1, self.tower_height):
@@ -42,14 +48,14 @@ class Tower(Structure):
                 (-2, 1), (-2, 0), (-2, -1),
                 (1, -2), (0, -2), (-1, -2)
             ):
-                block = 'cobblestone'
+                material = self.palette.get_material(STONE, BLOCK)
 
                 if dy % 7 == 1:
-                    block = 'polished_andesite'
+                    material = self.palette.get_material(STONE, DECORATED)
                 elif dx == 0 or dz == 0:
-                    block = 'stone_bricks'
+                    material = self.palette.get_material(STONE_ACCENT, BLOCK)
 
-                interface.placeBlock(cx + dx, y + dy, cz + dz, block)
+                material.place_block(interface, cx + dx, y + dy, cz + dz)
         
         # bottom of flair
         for dx, dz, dir in (
@@ -60,16 +66,16 @@ class Tower(Structure):
             (2, 2, None), (2, -2, None), (-2, 2, None), (-2, -2, None),
         ):
             if abs(dx) == 3 or abs(dz) == 3:
-                block = 'cobblestone_stairs'
+                material = self.palette.get_material(STONE, STAIRS)
                 
                 if dx == 0 or dz == 0:
-                    block = 'stone_brick_stairs'
+                    material = self.palette.get_material(STONE_ACCENT, STAIRS)
 
-                block += f'[facing={Direction.cardinal_text[Direction.opposite[dir]]},half=top]'
+                attrs = {'facing' : Direction.cardinal_text[Direction.opposite[dir]], 'half' : 'top'}
 
-                interface.placeBlock(cx + dx, y + self.tower_height - 1, cz + dz, block)
+                material.place_block(interface, cx + dx, y + self.tower_height - 1, cz + dz, attributes=attrs)
             else:
-                interface.placeBlock(cx + dx, y + self.tower_height - 1, cz + dz, 'cobblestone')
+                self.palette.get_material(STONE, BLOCK).place_block(interface, cx + dx, y + self.tower_height - 1, cz + dz)
 
         # top of flair
         for dx, dz, dir in (
@@ -80,14 +86,14 @@ class Tower(Structure):
             (2, 2, None), (2, -2, None), (-2, 2, None), (-2, -2, None),
         ):
             if abs(dx) == 3 or abs(dz) == 3:
-                block = 'cobblestone'
+                material = self.palette.get_material(STONE, BLOCK)
                 
                 if dx == 0 or dz == 0:
-                    block = 'stone_bricks'
+                    material = self.palette.get_material(STONE_ACCENT, BLOCK)
 
-                interface.placeBlock(cx + dx, y + self.tower_height, cz + dz, block)
+                material.place_block(interface, cx + dx, y + self.tower_height, cz + dz)
             else:
-                interface.placeBlock(cx + dx, y + self.tower_height, cz + dz, 'stone_bricks')
+                self.palette.get_material(STONE_ACCENT, BLOCK).place_block(interface, cx + dx, y + self.tower_height, cz + dz)
 
         # slabs
         for dx, dz, dir in (
@@ -97,4 +103,4 @@ class Tower(Structure):
             (0, -3, Direction.z_minus),
             (2, 2, None), (2, -2, None), (-2, 2, None), (-2, -2, None),
         ):
-            interface.placeBlock(cx + dx, y + self.tower_height + 1, cz + dz, 'stone_brick_slab')
+            self.palette.get_material(STONE_ACCENT, SLAB).place_block(interface, cx + dx, y + self.tower_height + 1, cz + dz)

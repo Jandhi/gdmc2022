@@ -1,6 +1,6 @@
 BLOCK = 'block'
 PILLAR = 'pillar'
-ACCENT = 'accent'
+DECORATED = 'decorated'
 CRACKED = 'cracked'
 
 FENCE = 'fence'
