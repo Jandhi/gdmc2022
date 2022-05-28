@@ -452,23 +452,23 @@ class StallGenerator(Generator):
                 if (a-x0)%2==0:
                     if stall.roof == 'front_back_down' or stall.roof == 'front_down' or (stall.roof == 'sides_down' and (a == l0 or a == l0+(stall.length-1)*l_dir)):
                         if swap:
-                            interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
+                            interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                         else:
                             interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                     else:
                         if swap:
-                            interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
+                            interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                         else:
                             interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                 else:
                     if stall.roof == 'front_back_down' or stall.roof == 'front_down' or (stall.roof == 'sides_down' and (a == l0 or a == l0+(stall.length-1)*l_dir)):
                         if swap:
-                            interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
+                            interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                         else:
                             interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                     else:
                         if swap:
-                            interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
+                            interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_banner_1.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                         else:
                             interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
         elif stall.overhang == 'campfire':
@@ -476,14 +476,14 @@ class StallGenerator(Generator):
             for a in range(l0,l0+stall.length*l_dir, l_dir):
                 if stall.roof == 'front_back_down' or stall.roof == 'front_down' or (stall.roof == 'sides_down' and (a == l0 or a == l0+(stall.length-1)*l_dir)):
                     if swap:
-                        interface.place_block(x0-1*d_dir, y0+stall.height-2, a, campfire_block)
+                        interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, campfire_block)
                     else:
-                        interface.place_block(a, y0+stall.height-2, z0-1*d_dir, campfire_block)
+                        interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, campfire_block)
                 else:
                     if swap:
-                        interface.place_block(x0-1*d_dir, y0+stall.height-1, a, campfire_block)
+                        interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, campfire_block)
                     else:
-                        interface.place_block(a, y0+stall.height-1, z0-1*d_dir, campfire_block)
+                        interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, campfire_block)
 
     def generate_goods(self, stall, interface):
         seed()
