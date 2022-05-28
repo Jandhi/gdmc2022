@@ -78,7 +78,7 @@ class SetBlockMaterial(Material):
 
     def place_block(self, interface: Interface, x: int, y: int, z: int, direction=None, Seed: int=None):
         x, y, z = interface.local2global(x, y, z)
-        block = self.block.get_facing(direction)
+        block = self.block.name
         #setting correct direction
         if direction == Direction.x_minus:
             block = block[:11] + '[rotation=12]' + block[11:len(block)]

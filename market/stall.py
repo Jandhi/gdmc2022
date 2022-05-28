@@ -10,7 +10,7 @@ class Stall:
     palette: Palette
 
     #p1 and p2 are the starting and end points of the rectangle that forms the road
-    def __init__(self, origin, counter: str = 'basic', side: str = 'basic', roof: str = 'basic', overhang: str = 'none', direction: Direction = 'z_minus', length: int=5, depth: int = 4, height: int = 5) -> None:
+    def __init__(self, palette, origin, counter: str = 'basic', side: str = 'basic', roof: str = 'basic', overhang: str = 'none', direction: Direction = 'z_minus', length: int=5, depth: int = 4, height: int = 5) -> None:
         self.origin = origin
         self.overhang = overhang
         self.counter = counter
@@ -24,7 +24,7 @@ class Stall:
         self.counter_space = [] #list of points where there is space to put items on a counter
         self.floor_space = [] #list of points where there is space to put items on a floor
 
-        self.palette = Palette()
+        self.palette = Palette(palette.data)
 
         if self.counter == 'random':
             self.randomize_stall()

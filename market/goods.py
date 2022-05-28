@@ -113,9 +113,9 @@ class Armour_Shop:
     counter_goods : list[Material] = (BasicMaterial(Block('light_weighted_pressure_plate')), BasicMaterial(Block('heavy_weighted_pressure_plate')),
         SetBlockMaterial(Block('player_head{SkullOwner:{Id:[I;864431335,1436894342,-1274960042,1899380984],Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGFmZjNmZmYzYWQ1ZDEwODA4Mzc5YWUyMDFiODMyYmZlZThhYzIyNjVmYmJlNjg0MTdkMTBmYjVmNThiMmQ4NSJ9fX0="}]}}}'))) #knight helmet
 
-    floor_goods : list[Material] = (SummonMaterial(Block('armor_stand', False, None, '{ShowArms:1b,NoBasePlate:1b,ArmorItems:[{id:"minecraft:leather_boots",Count:1b},{id:"minecraft:leather_leggings",Count:1b},{id:"minecraft:leather_chestplate",Count:1b},{id:"minecraft:leather_helmet",Count:1b}]}')),
-    SummonMaterial(Block('armor_stand', False, None, '{ShowArms:1b,NoBasePlate:1b,ArmorItems:[{id:"minecraft:golden_boots",Count:1b},{id:"minecraft:golden_leggings",Count:1b},{id:"minecraft:golden_chestplate",Count:1b},{id:"minecraft:golden_helmet",Count:1b}]}')),
-    SummonMaterial(Block('armor_stand', False, None, '{ShowArms:1b,NoBasePlate:1b,ArmorItems:[{id:"minecraft:iron_boots",Count:1b},{id:"minecraft:iron_leggings",Count:1b},{id:"minecraft:iron_chestplate",Count:1b},{id:"minecraft:iron_helmet",Count:1b}]}')))
+    floor_goods : list[Material] = (SummonMaterial(Block('armor_stand', None, False, False, None, '{ShowArms:1b,NoBasePlate:1b,ArmorItems:[{id:"minecraft:leather_boots",Count:1b},{id:"minecraft:leather_leggings",Count:1b},{id:"minecraft:leather_chestplate",Count:1b},{id:"minecraft:leather_helmet",Count:1b}]}')),
+    SummonMaterial(Block('armor_stand', None, False, False, None, '{ShowArms:1b,NoBasePlate:1b,ArmorItems:[{id:"minecraft:golden_boots",Count:1b},{id:"minecraft:golden_leggings",Count:1b},{id:"minecraft:golden_chestplate",Count:1b},{id:"minecraft:golden_helmet",Count:1b}]}')),
+    SummonMaterial(Block('armor_stand', None, False, False, None, '{ShowArms:1b,NoBasePlate:1b,ArmorItems:[{id:"minecraft:iron_boots",Count:1b},{id:"minecraft:iron_leggings",Count:1b},{id:"minecraft:iron_chestplate",Count:1b},{id:"minecraft:iron_helmet",Count:1b}]}')))
 
 @dataclass
 class Bakery_Shop:
