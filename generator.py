@@ -1,6 +1,6 @@
 from progress.bar import Bar
 from gdpc.interface import Interface
-from palette.palette import Palette
+from palette.palette_old import Palette
 
 class Generator():
     name = 'Generator'

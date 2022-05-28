@@ -23,7 +23,7 @@ class StructurePlacer(Generator):
         super().__init__(**kwargs)
 
         self.placed_structures = []
-        self.counts = {0 for dms in dimensions_list}
+        self.counts = {dms : 0 for dms in dimensions_list}
 
     def __generate__(self, interface: Interface):
         self.attempt_placement(self.point, interface)

@@ -1,4 +1,7 @@
+from typing import TypeVar
 import noise.noise as noise
+
+
 
 seed = 0
 
@@ -13,6 +16,11 @@ def set_seed(value : int) -> None:
 Seeded Noise functions
 Combine game seed with given seed
 '''
+
+T = TypeVar('T')
+# returns a random element from list
+def choose(seed, list : list[T]) -> T:
+    return list[recursive_hash(seed) % len(list)]
 
 def mix_seed(seed) -> int:
     if isinstance(seed, tuple):

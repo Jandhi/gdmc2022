@@ -4,6 +4,8 @@ from house.grid import Grid, GridNode
 from gdpc.interface import Interface
 
 from house.house import House
+from palette.palette import FLOOR
+from palette.sets.block_types import BLOCK
 
 class FloorGenerator(Generator):
     name = 'Floor Generator'
@@ -36,5 +38,5 @@ class FloorGenerator(Generator):
 
         for x in range(x1, x2):
             for z in range(z1, z2):
-                node.palette.floor.place_block(interface, x, y0, z)
+                node.palette.get_material(FLOOR, BLOCK).place_block(interface, x, y0, z)
         

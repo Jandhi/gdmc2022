@@ -31,9 +31,13 @@ class BubbleGenerator(Generator):
     ]
     outer_distance_minimum = 8
     inner_distance_minimum = 5
+    bubble_map = None
 
-    def get_bubble_color(self, district):
-        return self.bubble_colors[district % len(self.bubble_colors)]
+    def get_bubble_wool(self, district):
+        if district is None:
+            return 'air'
+        
+        return self.bubble_colors[district % len(self.bubble_colors)].replace('wool', 'stained_glass')
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
@@ -51,9 +55,9 @@ class BubbleGenerator(Generator):
         )
 
     def __generate__(self, interface : Interface):
-        bubble_map = [[None for z in range(self.depth)] for x in range(self.width)]
+        self.bubble_map = [[None for z in range(self.depth)] for x in range(self.width)]
 
-        self.flood(bubble_map)
+        self.flood()
         self.create_road_network(interface)
     
     def generate_start_points(self):
@@ -98,14 +102,14 @@ class BubbleGenerator(Generator):
         
         return start_points
 
-    def flood(self, bubble_map):
+    def flood(self):
         print('Beginning flood')
         start_points = self.generate_start_points()
         self.bubbles = []
 
         for index, point in enumerate(start_points):
             x, z = point
-            bubble_map[x][z] = index
+            self.bubble_map[x][z] = index
             self.bubbles.append(Bubble(point))
 
         self.bubble_layout = BubbleLayout(self.bubbles)
@@ -115,24 +119,24 @@ class BubbleGenerator(Generator):
 
         while len(queue) > 0:
             x, z = queue.pop(0)
-            current_bubble_index = bubble_map[x][z]
+            current_bubble_index = self.bubble_map[x][z]
 
             for px, pz in neighbours_2d((x, z), self.hmap, self.wmap):
                 # bounds
                 if px < 0 or pz < 0 or px >= self.width or pz >= self.depth:
                     continue
                 
-                if bubble_map[px][pz] != None:
-                    if bubble_map[px][pz] != current_bubble_index:
+                if self.bubble_map[px][pz] != None:
+                    if self.bubble_map[px][pz] != current_bubble_index:
                         # establish neighbours
-                        d1, d2 = self.bubbles[current_bubble_index], self.bubbles[bubble_map[px][pz]]
+                        d1, d2 = self.bubbles[current_bubble_index], self.bubbles[self.bubble_map[px][pz]]
                         self.bubble_layout.set_neighbours(d1, d2)
 
                     # already claimed
                     continue
                 else:
                     visited.add((px, pz))
-                    bubble_map[px][pz] = current_bubble_index
+                    self.bubble_map[px][pz] = current_bubble_index
                     self.bubbles[current_bubble_index].add_point((px, pz))
                     queue.append((px, pz))
     

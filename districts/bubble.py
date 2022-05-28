@@ -12,3 +12,13 @@ class Bubble:
 
         self.average_point = (x, z)
         self.size += 1 
+
+    def merge_with(self, bubble):
+        ax1, az1 = self.average_point
+        ax2, az2 = bubble.average_point
+
+        x = (self.size * ax1 + bubble.size * ax2) / (self.size + bubble.size)
+        z = (self.size * az1 + bubble.size * az2) / (self.size + bubble.size)
+
+        self.average_point = (x, z)
+        self.size += bubble.size 

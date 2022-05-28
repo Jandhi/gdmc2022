@@ -3,6 +3,9 @@ from house.house import House
 from generator import Generator
 from house.grid import GridNode
 from gdpc.interface import Interface
+from noise.random import odds, recursive_hash
+from palette.palette import WOOD_ACCENT
+from palette.sets.block_types import FENCE, TRAPDOOR
 
 from vector import sum_vectors
 
@@ -38,21 +41,27 @@ class WindowGenerator(Generator):
                 elif direction == Direction.z_minus:
                     z = 0
 
-                node.palette.fence.place_block(interface, x0 + x, y0 + 2, z0 + z)
-                node.palette.fence.place_block(interface, x0 + x, y0 + 3, z0 + z)
+                node.palette.get_material(WOOD_ACCENT, FENCE).place_block(interface, x0 + x, y0 + 2, z0 + z)
+                node.palette.get_material(WOOD_ACCENT, FENCE).place_block(interface, x0 + x, y0 + 3, z0 + z)
 
                 px, py, pz = sum_vectors(
                     (x0 + x, y0, z0 + z), 
                     Direction.vectors[direction], 
-                    Direction.vectors[Direction.left[direction]]
                 )
 
-                node.palette.trapdoor.place_block(interface, px, py + 2, pz, attributes={
+                # one in four is covered
+                if odds(recursive_hash(hash('uncovered'), px, py, pz), 3, 4):
+                    px, py, pz = sum_vectors(
+                        (px, py, pz),
+                        Direction.vectors[Direction.left[direction]]
+                    )
+
+                node.palette.get_material(WOOD_ACCENT, TRAPDOOR).place_block(interface, px, py + 2, pz, attributes={
                     'facing' : Direction.cardinal_text[direction],
                     'half' : 'bottom',
                     'open' : 'true'
                 })
-                node.palette.trapdoor.place_block(interface, px, py + 3, pz, attributes={
+                node.palette.get_material(WOOD_ACCENT, TRAPDOOR).place_block(interface, px, py + 3, pz, attributes={
                     'facing' : Direction.cardinal_text[direction],
                     'half' : 'top',
                     'open' : 'true'

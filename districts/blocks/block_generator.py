@@ -34,8 +34,8 @@ class BlockGenerator(Generator):
             
 
     def attempt_placement(self, x, z, interface):
-        grid_width = 5
-        grid_depth = 5
+        grid_width = 7
+        grid_depth = 7
         
         for args in shuffle(rhash(x, z), [
             (x, z, grid_width, grid_depth),

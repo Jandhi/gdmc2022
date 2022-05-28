@@ -16,7 +16,10 @@ class BasicMaterial(Material):
         if attributes:
             block.set_attributes(attributes)
         block.set_facing(direction)
-        interface.placeBlock(x, y, z, str(block))
+
+        name = str(block)
+
+        interface.placeBlock(x, y, z, name)
 
 # Extension function for Block to turn it into a basic material
 def material(self) -> Material:

@@ -1,0 +1,6 @@
+FLAT = 'flat'
+DOME = 'dome'
+BALCONY = 'balcony'
+SLOPE = 'slope'
+HIGH_SLOPE = 'high_slope'
+TOWER = 'tower'

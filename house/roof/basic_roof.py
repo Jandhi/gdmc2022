@@ -2,6 +2,8 @@ from gdpc.interface import Interface
 from directions import Direction
 from house.grid import GridNode
 from house.roof.roof_design import RoofDesign
+from palette.palette import ROOF_PRIMARY, ROOF_SECONDARY
+from palette.sets.block_types import BLOCK, STAIRS
 
 class BasicRoof(RoofDesign):
     def generate_roof(self, interface: Interface, node: GridNode):
@@ -23,13 +25,21 @@ class BasicRoof(RoofDesign):
             x0, y0, z0 = node.get_origin()
 
             position = min(i, len(points) - i - 1) # symmetry
-            block = 'stripped_spruce_log'
+            material = node.palette.get_material(ROOF_PRIMARY, BLOCK)
+            attributes = {}
 
             if position == 0:
-                block = 'polished_andesite'
+                material = node.palette.get_material(ROOF_SECONDARY, BLOCK)
             elif position == (len(points) - 1) // 2:
-                block = f'cobblestone_stairs[facing={Direction.cardinal_text[direction]}]'
+                material = node.palette.get_material(ROOF_SECONDARY, STAIRS)
+                attributes={
+                    'facing' : Direction.cardinal_text[direction]
+                }
             else:
-                block = f'spruce_stairs[facing={Direction.cardinal_text[direction]}]'
-
-            interface.placeBlock(x + x0, y + 1 + y0, z + z0, block)
+                material = node.palette.get_material(ROOF_PRIMARY, STAIRS)
+                attributes={
+                    'facing' : Direction.cardinal_text[direction]
+                }
+            
+            
+            material.place_block(interface, x + x0, y + 1 + y0, z + z0, attributes=attributes)

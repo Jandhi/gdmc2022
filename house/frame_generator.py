@@ -3,6 +3,9 @@ from generator import Generator
 from house.grid import GridNode
 from gdpc.interface import Interface
 
+from palette.palette import FRAME
+from palette.sets.block_types import PILLAR
+
 class FrameGenerator(Generator):
     name = 'FrameGenerator'
 
@@ -25,15 +28,15 @@ class FrameGenerator(Generator):
         for x in (0, node.width - 1):
             for y in range(node.height):
                 for z in (0, node.depth - 1):
-                    node.palette.frame.place_block(interface, x + x0, y + y0, z + z0, Direction.y_plus)
+                    node.palette.get_material(FRAME, PILLAR).place_block(interface, x + x0, y + y0, z + z0, Direction.y_plus)
         
         # sides
         for x in (0, node.width - 1):
             for y in (0, node.height - 1):
                 for z in range(1, node.depth - 1):
-                    node.palette.frame.place_block(interface, x + x0, y + y0, z + z0, Direction.z_plus)
+                    node.palette.get_material(FRAME, PILLAR).place_block(interface, x + x0, y + y0, z + z0, Direction.z_plus)
         
         for x in range(1, node.width - 1):
             for y in (0, node.height - 1):
                 for z in (0, node.depth - 1):
-                    node.palette.frame.place_block(interface, x + x0, y + y0, z + z0, Direction.x_plus)
+                    node.palette.get_material(FRAME, PILLAR).place_block(interface, x + x0, y + y0, z + z0, Direction.x_plus)

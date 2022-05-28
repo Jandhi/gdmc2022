@@ -3,6 +3,9 @@ from house.walls.wall_design import WallDesign
 from house.grid import GridNode
 from gdpc.interface import Interface
 
+from palette.palette import WALL_PRIMARY
+from palette.sets.block_types import BLOCK, FENCE, STAIRS
+
 class WallPillarDesign(WallDesign):
     def generate_wall(self, interface : Interface, node : GridNode, direction):
         for rotation in (Direction.left, Direction.right):
@@ -24,11 +27,11 @@ class WallPillarDesign(WallDesign):
         
         for y in range(1, node.height - 1):
             if y == 1:
-                node.palette.wall_stairs.place_block(interface, x0 + x, y0 + y, z0 + z, Direction.opposite[direction], {'half': 'bottom'})
+                node.palette.get_material(WALL_PRIMARY, STAIRS).place_block(interface, x0 + x, y0 + y, z0 + z, Direction.opposite[direction], {'half': 'bottom'})
             elif y == node.height - 2:
-                node.palette.wall_stairs.place_block(interface, x0 + x, y0 + y, z0 + z, Direction.opposite[direction], {'half': 'top'})
+                node.palette.get_material(WALL_PRIMARY, STAIRS).place_block(interface, x0 + x, y0 + y, z0 + z, Direction.opposite[direction], {'half': 'top'})
             else:
-                node.palette.wall.place_block(interface, x0 + x, y0 + y, z0 + z, direction)
+                node.palette.get_material(WALL_PRIMARY, BLOCK).place_block(interface, x0 + x, y0 + y, z0 + z, direction)
 
     def generate_corner_pillar(self, interface : Interface, node : GridNode, direction, secondary_direction):
         x0, y0, z0 = node.get_origin()
@@ -51,6 +54,6 @@ class WallPillarDesign(WallDesign):
 
         for y in range(1, node.height - 1):
             if y == node.height - 2:
-                node.palette.wall_stairs.place_block(interface, x0 + x, y0 + y, z0 + z, Direction.opposite[direction], {'half': 'top'})
+                node.palette.get_material(WALL_PRIMARY, STAIRS).place_block(interface, x0 + x, y0 + y, z0 + z, Direction.opposite[direction], {'half': 'top'})
             else:
-                node.palette.wall_fence.place_block(interface, x0 + x, y0 + y, z0 + z)
+                node.palette.get_material(WALL_PRIMARY, FENCE).place_block(interface, x0 + x, y0 + y, z0 + z)

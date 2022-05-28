@@ -38,7 +38,7 @@ def choose_weighted(seed, list : list[tuple[T, int]]) -> T:
 
 # returns true or false based on successes to total odds
 def odds(seed, successes, total) -> bool:
-    return hash(BITNOISE4, seed) % total < successes
+    return (hash(BITNOISE4, seed) % total) < successes
 
 # test function for above
 def test_odds(seed, trials, successes, total):

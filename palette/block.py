@@ -2,11 +2,16 @@ from dataclasses import dataclass
 
 from directions import Direction, add_directions
 
+def create_block(name : str):
+    is_log = name.endswith('log') or (name.endswith('stem') and name != 'mushroom_stem')
+
+    return Block(name)
+
 @dataclass
 class Block:
     name : str
     attributes : dict[str, str] = None
-    is_log : bool = False
+    is_pillar : bool = False
     is_stairs : bool = False
     base_direction : str = None
 
@@ -23,8 +28,8 @@ class Block:
         if not true_direction:
             return
 
-        if self.is_log:
-            self.__set_facing_log(true_direction)
+        if self.is_pillar:
+            self.__set_facing_pillar(true_direction)
 
         if self.is_stairs:
             return self.__set_facing_stairs(true_direction)
@@ -41,7 +46,7 @@ class Block:
     def __set_facing_stairs(self, direction):
         self.attributes['facing'] = Direction.cardinal_text[direction]
     
-    def __set_facing_log(self, direction):
+    def __set_facing_pillar(self, direction):
         axis = 'x'
         if direction in (Direction.y_plus, Direction.y_minus):
             axis = 'y'
@@ -50,6 +55,7 @@ class Block:
         
         self.attributes['axis'] = axis
     
+    # this method is added in material.py to create material from block
     def material(self):
         pass
 

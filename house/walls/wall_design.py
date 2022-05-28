@@ -1,6 +1,8 @@
 from directions import Direction
 from house.grid import GridNode
 from gdpc.interface import Interface
+from palette.palette import WALL_PRIMARY, WALL_SECONDARY
+from palette.sets.block_types import BLOCK
 
 from vector import sum_vectors
 
@@ -14,7 +16,7 @@ class BasicWall(WallDesign):
         x0, y0, z0 = node.get_origin()
 
         for x, y, z in points:
-            node.palette.wall.place_block(interface, x0 + x, y0 + y, z0 + z)     
+            node.palette.get_material(WALL_PRIMARY, BLOCK).place_block(interface, x0 + x, y0 + y, z0 + z)     
 
 class RecededWall(WallDesign):
     def generate_wall(self, interface : Interface, node : GridNode, direction):
@@ -25,7 +27,7 @@ class RecededWall(WallDesign):
             diffVector = Direction.vectors[Direction.opposite[direction]]
             x, y, z = sum_vectors(point, diffVector)
 
-            material = node.palette.wall if y != 1 else node.palette.wall_accent
+            material = node.palette.get_material(WALL_PRIMARY, BLOCK) if y != 1 else node.palette.get_material(WALL_SECONDARY, BLOCK)
 
             if x == 0 and not node.get_neighbour(Direction.x_minus):
                 continue
