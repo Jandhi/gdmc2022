@@ -3,11 +3,12 @@ from generator import Generator
 from market.stall import Stall
 from gdpc.interface import Interface
 from palette.block import Block
-from palette.palette import Palette
+from palette.palette import WOOD, Palette
 from palette.material import Material
 from random import seed
 from random import randint
 from directions import Direction
+from palette.sets.block_types import BLOCK, FENCE, FENCE_GATE, SLAB, STAIRS, TRAPDOOR
 
 class StallGenerator(Generator):
     name = 'Stall Generator'
@@ -93,9 +94,9 @@ class StallGenerator(Generator):
             stall.add_floor_space((x0-x_dir,y0,z0))
             stall.add_floor_space((x0-x_dir,y0,z0+(stall.length-1)*z_dir))
         for corner in corners:
-            stall.palette.market_base.place_block(interface, corner[0], corner[1], corner[2])
+            stall.palette.get_material(WOOD, BLOCK).place_block(interface, corner[0], corner[1], corner[2])
             for a in range(corner[1]+1, corner[1]+stall.height-1):
-                stall.palette.market_fence.place_block(interface, corner[0], a, corner[2])
+                stall.palette.get_material(WOOD, FENCE).place_block(interface, corner[0], a, corner[2])
 
     def generate_counter(self, stall, interface):
         x0, y0, z0 = stall.get_origin()
@@ -103,146 +104,146 @@ class StallGenerator(Generator):
         if stall.counter == 'basic':
             for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                 if swap:
-                    stall.palette.market_base.place_block(interface, x0, y0, a)
+                    stall.palette.get_material(WOOD, BLOCK).place_block(interface, x0, y0, a)
                     stall.add_counter_space((x0,y0+1,a))
                 else: 
-                    stall.palette.market_base.place_block(interface, a, y0, z0)
+                    stall.palette.get_material(WOOD, BLOCK).place_block(interface, a, y0, z0)
                     stall.add_counter_space((a,y0+1,z0))
         elif stall.counter == 'half_stair':
             if stall.length%2==0:
                 for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                     if (a-l0)%2==0 and a<=stall.length-2:
                         if swap:
-                            stall.palette.market_base.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, x0, y0, a)
                             stall.add_counter_space((x0,y0+1,a))
                         else: 
-                            stall.palette.market_base.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, a, y0, z0)
                             stall.add_counter_space((a,y0+1,z0))
                     elif (a-l0)%2==1 and a>=stall.length-2:
                         if swap:
-                            stall.palette.market_base.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, x0, y0, a)
                             stall.add_counter_space((x0,y0+1,a))
                         else: 
-                            stall.palette.market_base.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, a, y0, z0)
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
             else:
                 for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                     if (a-l0)%2==0:
                         if swap:
-                            stall.palette.market_base.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, x0, y0, a)
                             stall.add_counter_space((x0,y0+1,a))
                         else: 
-                            stall.palette.market_base.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, a, y0, z0)
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
         elif stall.counter == 'stair':
             for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                 if swap:
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                     stall.add_counter_space((x0,y0+1,a))
                 else:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                     stall.add_counter_space((a,y0+1,z0))
         elif stall.counter == 'slab':
             for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                 if swap:
-                    stall.palette.market_top_slab.place_block(interface, x0, y0, a)
+                    stall.palette.get_material(WOOD, SLAB).place_block(interface, x0, y0, a, attributes={'type':'top'})
                     stall.add_counter_space((x0,y0+1,a))
                 else:
-                    stall.palette.market_top_slab.place_block(interface, a, y0, z0)
+                    stall.palette.get_material(WOOD, SLAB).place_block(interface, a, y0, z0, attributes={'type':'top'})
                     stall.add_counter_space((a,y0+1,z0))
         elif stall.counter == 'half_slab':
             if stall.length%2==0:
                 for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                     if (a-l0)%2==0 and a<=stall.length-2:
                         if swap:
-                            stall.palette.market_base.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, x0, y0, a)
                             stall.add_counter_space((x0,y0+1,a))
                         else: 
-                            stall.palette.market_base.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, a, y0, z0)
                             stall.add_counter_space((a,y0+1,z0))
                     elif (a-l0)%2==1 and a>=stall.length-2:
                         if swap:
-                            stall.palette.market_base.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, x0, y0, a)
                             stall.add_counter_space((x0,y0+1,a))
                         else: 
-                            stall.palette.market_base.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, a, y0, z0)
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
-                            stall.palette.market_top_slab.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, SLAB).place_block(interface, x0, y0, a, attributes={'type':'top'})
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            stall.palette.market_top_slab.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, SLAB).place_block(interface, a, y0, z0, attributes={'type':'top'})
                             stall.add_counter_space((a,y0+1,z0))
             else:
                 for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                     if (a-l0)%2==0:
                         if swap:
-                            stall.palette.market_base.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, x0, y0, a)
                             stall.add_counter_space((x0,y0+1,a))
                         else: 
-                            stall.palette.market_base.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, BLOCK).place_block(interface, a, y0, z0)
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
-                            stall.palette.market_top_slab.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, SLAB).place_block(interface, x0, y0, a, attributes={'type':'top'})
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            stall.palette.market_top_slab.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, SLAB).place_block(interface, a, y0, z0, attributes={'type':'top'})
                             stall.add_counter_space((a,y0+1,z0))
         elif stall.counter == 'stair_slab':
             if stall.length%2==0:
                 for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                     if (a-l0)%2==0 and a<=stall.length-2:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
                     elif (a-l0)%2==1 and a>=stall.length-2:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
-                            stall.palette.market_top_slab.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, SLAB).place_block(interface, x0, y0, a, attributes={'type':'top'})
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            stall.palette.market_top_slab.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, SLAB).place_block(interface, a, y0, z0, attributes={'type':'top'})
                             stall.add_counter_space((a,y0+1,z0))
             else:
                 for a in range(l0+(1)*l_dir,l0+(stall.length-1)*l_dir, l_dir):
                     if (a-l0)%2==0:
                         if swap:
-                            interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                            interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
                             stall.add_counter_space((a,y0+1,z0))
                     else:
                         if swap:
-                            stall.palette.market_top_slab.place_block(interface, x0, y0, a)
+                            stall.palette.get_material(WOOD, SLAB).place_block(interface, x0, y0, a, attributes={'type':'top'})
                             stall.add_counter_space((x0,y0+1,a))
                         else:
-                            stall.palette.market_top_slab.place_block(interface, a, y0, z0)
+                            stall.palette.get_material(WOOD, SLAB).place_block(interface, a, y0, z0, attributes={'type':'top'})
                             stall.add_counter_space((a,y0+1,z0))
 
     def generate_side(self, stall, interface):
@@ -253,61 +254,61 @@ class StallGenerator(Generator):
         elif stall.side == 'basic': 
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    stall.palette.market_base.place_block(interface, a, y0, z0)
-                    stall.palette.market_base.place_block(interface, a, y0, z0+(stall.length-1)*l_dir)
+                    stall.palette.get_material(WOOD, BLOCK).place_block(interface, a, y0, z0)
+                    stall.palette.get_material(WOOD, BLOCK).place_block(interface, a, y0, z0+(stall.length-1)*l_dir)
                     stall.add_counter_space((a,y0+1,z0))
                     stall.add_counter_space((a,y0+1,z0+(stall.length-1)*l_dir))
                 else:
-                    stall.palette.market_base.place_block(interface, x0, y0, a)
-                    stall.palette.market_base.place_block(interface, x0+(stall.length-1)*l_dir, y0, a)
+                    stall.palette.get_material(WOOD, BLOCK).place_block(interface, x0, y0, a)
+                    stall.palette.get_material(WOOD, BLOCK).place_block(interface, x0+(stall.length-1)*l_dir, y0, a)
                     stall.add_counter_space((x0,y0+1,a))
                     stall.add_counter_space((x0+(stall.length-1)*l_dir,y0+1,a))
         elif stall.side == 'fence': 
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_fence.block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
-                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_fence.block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, FENCE).block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
+                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.get_material(WOOD, FENCE).block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
                 else:
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_fence.block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
-                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_fence.block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, FENCE).block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
+                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.get_material(WOOD, FENCE).block.name}[{Direction.cardinal_text[Direction.opposite[stall.direction]]}=true,{Direction.cardinal_text[stall.direction]}=true]')
         elif stall.side == 'fence_gate': 
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}]')
-                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, FENCE_GATE).block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}]')
+                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.get_material(WOOD, FENCE_GATE).block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}]')
                 else:
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}]')
-                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_fence_gate.block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, FENCE_GATE).block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}]')
+                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.get_material(WOOD, FENCE_GATE).block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}]')
         elif stall.side == 'trapdoor':
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
-                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}, half=top]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, TRAPDOOR).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.get_material(WOOD, TRAPDOOR).block.name}[facing={Direction.cardinal_text[stall.direction]}, half=top]')
                 else: 
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
-                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}, half=top]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, TRAPDOOR).block.name}[facing={Direction.cardinal_text[Direction.opposite[stall.direction]]}, half=top]')
+                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.get_material(WOOD, TRAPDOOR).block.name}[facing={Direction.cardinal_text[stall.direction]}, half=top]')
         elif stall.side == 'stair': 
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    interface.placeBlock(a, y0, z0, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}, half=top]')
-                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}, half=top]')
+                    interface.placeBlock(a, y0, z0, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}, half=top]')
+                    interface.placeBlock(a, y0, z0+(stall.length-1)*l_dir, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}, half=top]')
                     stall.add_counter_space((a,y0+1,z0))
                     stall.add_counter_space((a,y0+1,z0+(stall.length-1)*l_dir))
                 else:
-                    interface.placeBlock(x0, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}, half=top]')
-                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.market_stair.block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}, half=top]')
+                    interface.placeBlock(x0, y0, a, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.right[stall.direction]]}, half=top]')
+                    interface.placeBlock(x0+(stall.length-1)*l_dir, y0, a, f'{stall.palette.get_material(WOOD, STAIRS).block.name}[facing={Direction.cardinal_text[Direction.left[stall.direction]]}, half=top]')
                     stall.add_counter_space((x0,y0+1,a))
                     stall.add_counter_space((x0+(stall.length-1)*l_dir,y0+1,a))
         elif stall.side == 'slab': 
             for a in range(d0+1*d_dir,d0+(stall.depth-1)*d_dir, d_dir):
                 if swap:
-                    stall.palette.market_top_slab.place_block(interface, a, y0, z0)
-                    stall.palette.market_top_slab.place_block(interface, a, y0, z0+(stall.length-1)*l_dir)
+                    stall.palette.get_material(WOOD, SLAB).place_block(interface, a, y0, z0, attributes={'type':'top'})
+                    stall.palette.get_material(WOOD, SLAB).place_block(interface, a, y0, z0+(stall.length-1)*l_dir, attributes={'type':'top'})
                     stall.add_counter_space((a,y0+1,z0))
                     stall.add_counter_space((a,y0+1,z0+(stall.length-1)*l_dir))
                 else:
-                    stall.palette.market_top_slab.place_block(interface, x0, y0, a)
-                    stall.palette.market_top_slab.place_block(interface, x0+(stall.length-1)*l_dir, y0, a)
+                    stall.palette.get_material(WOOD, SLAB).place_block(interface, x0, y0, a, attributes={'type':'top'})
+                    stall.palette.get_material(WOOD, SLAB).place_block(interface, x0+(stall.length-1)*l_dir, y0, a, attributes={'type':'top'})
                     stall.add_counter_space((x0,y0+1,a))
                     stall.add_counter_space((x0+(stall.length-1)*l_dir,y0+1,a))
 
@@ -438,14 +439,14 @@ class StallGenerator(Generator):
             for a in range(l0,l0+stall.length*l_dir, l_dir):
                 if stall.roof == 'front_back_down' or stall.roof == 'front_down' or (stall.roof == 'sides_down' and (a == l0 or a == l0+(stall.length-1)*l_dir)):
                     if swap:
-                        interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
+                        interface.placeBlock(x0-1*d_dir, y0+stall.height-2, a, f'{stall.palette.get_material(WOOD, TRAPDOOR).block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                     else:
-                        interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
+                        interface.placeBlock(a, y0+stall.height-2, z0-1*d_dir, f'{stall.palette.get_material(WOOD, TRAPDOOR).block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                 else:
                     if swap:
-                        interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
+                        interface.placeBlock(x0-1*d_dir, y0+stall.height-1, a, f'{stall.palette.get_material(WOOD, TRAPDOOR).block.name}[facing={Direction.cardinal_text[stall.direction]}]')
                     else:
-                        interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_trapdoor.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
+                        interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.get_material(WOOD, TRAPDOOR).block.name}[facing={Direction.cardinal_text[stall.direction]}]')
         elif stall.overhang == 'banner':
             for a in range(l0,l0+stall.length*l_dir, l_dir):
                 if (a-x0)%2==0:
@@ -471,17 +472,18 @@ class StallGenerator(Generator):
                         else:
                             interface.placeBlock(a, y0+stall.height-1, z0-1*d_dir, f'{stall.palette.market_banner_2.block.name}[facing={Direction.cardinal_text[stall.direction]}]')
         elif stall.overhang == 'campfire':
+            campfire_block = 'campfire[lit=false]'
             for a in range(l0,l0+stall.length*l_dir, l_dir):
                 if stall.roof == 'front_back_down' or stall.roof == 'front_down' or (stall.roof == 'sides_down' and (a == l0 or a == l0+(stall.length-1)*l_dir)):
                     if swap:
-                        stall.palette.market_campfire.place_block(interface, x0-1*d_dir, y0+stall.height-2, a)
+                        interface.place_block(x0-1*d_dir, y0+stall.height-2, a, campfire_block)
                     else:
-                        stall.palette.market_campfire.place_block(interface, a, y0+stall.height-2, z0-1*d_dir)
+                        interface.place_block(a, y0+stall.height-2, z0-1*d_dir, campfire_block)
                 else:
                     if swap:
-                        stall.palette.market_campfire.place_block(interface, x0-1*d_dir, y0+stall.height-1, a)
+                        interface.place_block(x0-1*d_dir, y0+stall.height-1, a, campfire_block)
                     else:
-                        stall.palette.market_campfire.place_block(interface, a, y0+stall.height-1, z0-1*d_dir)
+                        interface.place_block(a, y0+stall.height-1, z0-1*d_dir, campfire_block)
 
     def generate_goods(self, stall, interface):
         seed()
