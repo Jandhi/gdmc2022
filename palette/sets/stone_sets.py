@@ -22,7 +22,8 @@ cobblestone_set = make_set({
     BLOCK : 'cobblestone',
     STAIRS : 'cobblestone_stairs',
     SLAB : 'cobblestone_slab',
-    FENCE : 'cobblestone_wall'
+    FENCE : 'cobblestone_wall',
+    DECORATED : 'polished_andesite'
 })
 
 mossy_cobblestone_set = make_set({

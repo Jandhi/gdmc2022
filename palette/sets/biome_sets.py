@@ -2,8 +2,8 @@ from noise.random import choose
 from palette.design.design import ROOF_DESIGN
 from palette.design.roof_designs import BALCONY, DOME, FLAT
 from palette.sets.set_categories import ROOF, WALL, STONE, WOOD
-from palette.sets.stone_sets import sandstone_set, cut_sandstone_set, smooth_sandstone_set
-from palette.sets.wood_sets import BIRCH, JUNGLE, OAK, WARPED, wood_sets
+from palette.sets.stone_sets import *
+from palette.sets.wood_sets import BIRCH, JUNGLE, OAK, SPRUCE, WARPED, wood_sets
 from palette.palette import *
 
 desert_biome_set = {
@@ -57,11 +57,38 @@ desert_biome_set = {
     ]
 }
 
+oak_biome_set = {
+    STONE : [
+        {
+            STONE : cobblestone_set,
+            STONE_ACCENT : stone_bricks_set
+        },
+    ],
+    WOOD : [
+        {
+            WOOD : wood_sets[OAK],
+            WOOD_ACCENT : wood_sets[SPRUCE]
+        },
+        {
+            WOOD : wood_sets[OAK],
+            WOOD_ACCENT : wood_sets[BIRCH]
+        }
+    ],
+    WALL : [
+        {
+            FRAME : {PILLAR : 'oak_log'}
+        },
+        {
+            FRAME : {PILLAR : 'stripped_oak_log'}
+        }
+    ]
+}
+
 def combine(*biome_sets):
     total = {}
     
     for set in biome_sets:
-        for category, list in set:
+        for category, list in set.items():
             if category not in total:
                 total[category] = list
             else:

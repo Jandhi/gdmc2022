@@ -2,7 +2,7 @@ from gdpc.interface import requestPlayerArea, Interface, setBuildArea
 from gdpc.worldLoader import WorldSlice
 from noise.random import set_seed
 from noise.noise import recursive_hash
-from palette.sets.biome_sets import create_palette, desert_biome_set
+from palette.sets.biome_sets import *
 from structures.tower import Tower
 from terrain.buildmap import get_build_map
 from terrain.watermap import get_water_map
@@ -32,7 +32,10 @@ Tower(
     wmap=wmap, 
     bmap=bmap,
     point=(100,100),
-    palette=create_palette(desert_biome_set)
+    palette=create_palette(combine(
+        desert_biome_set, 
+        oak_biome_set
+    ))
 ).generate(interface)
 
 interface.sendBlocks()
