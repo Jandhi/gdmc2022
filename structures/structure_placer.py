@@ -1,11 +1,7 @@
 from directions import Direction
 from noise.noise import shuffle
 from noise.random import recursive_hash
-<<<<<<< HEAD
 from structures.structure import LARGE, MEDIUM, dimensions as dimensions_list, structures_by_dim
-=======
-from structures.structure import dimensions as dimensions_list, structures_by_dim
->>>>>>> a3980a71e0b167cc2bb6932aa4855d646adecd66
 from generator import Generator
 from gdpc.interface import Interface
 from structures.load_structures import load_structures
