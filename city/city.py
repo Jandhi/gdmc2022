@@ -10,12 +10,13 @@ from random import randint
 
 class City:
 
-    def __init__(self, p1, y, p2) -> None:
+    def __init__(self, p1, hmap, wmap, p2) -> None:
         self.p1 = p1
-        self.y = y
         self.p2 = p2
         self.trees = []
         self.stalls = []
+        self.hmap = hmap
+        self.wmap = wmap
 
     def add_tree(self, point, type):
         self.trees.append(Tree(point, type))
@@ -30,17 +31,20 @@ class City:
 
             a = randint(x_min,x_max)
             b = randint(z_min,z_max)
-            point = (a, self.y+1, b)
-            c = randint(0,9)
-            #if c>8:
-            #     type = "large_baobab"
-            #elif 4<=c<=8:
-            #     type = "medium_baobab"
-            #else:
-            #    type = "small_baobab"
-            type = "mega_jungle"
-            new_tree = Tree(point, type)
-            self.trees.append(new_tree)
+            point = (a, self.hmap[a][b], b)
+            if self.wmap[a][b] == False:
+                c = randint(4,10)
+                if c==10:
+                    type = "mega_oak"
+                elif 10>c>8:
+                    type = "large_oak"
+                elif 4<=c<=8:
+                    type = "medium_oak"
+                else:
+                    type = "small_oak"
+                #type = "mega_jungle"
+                new_tree = Tree(point, type)
+                self.trees.append(new_tree)
 
     def add_stall(self, point):
         self.stalls.append(Stall(point))

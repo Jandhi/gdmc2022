@@ -17,3 +17,5 @@ class Palette:
     fence : Material = Block('oak_fence').material()
     roof_stairs : Material = Block('oak_stairs', is_stairs=True).material()
     roof_slab : Material = Block('oak_slab').material()
+    wood : Material = Block('oak_wood').material()
+    leaves = Material = Block('oak_leaves[persistent=true]').material()

@@ -346,7 +346,7 @@ class TreeGenerator(Generator):
 
         
         for a in range (0, branch_num):
-            branch_height = randint(int(height/2)+2, height-1)
+            branch_height = randint(int((height-y0)/2+y0)+2, height-1)
             branch_pos = randint(1, 16)
             if branch_pos == 1:
                 branches.append([x0+2,branch_height,z0])
@@ -521,7 +521,7 @@ class TreeGenerator(Generator):
 
         
         for a in range (0, branch_num):
-            branch_height = randint(int(height/2)+4, height-1)
+            branch_height = randint(int((height-y0)/2+y0)+4, height-1)
             branch_pos = randint(1, 24)
             if branch_pos == 1:
                 branches.append([x0+3,branch_height,z0])
@@ -1996,7 +1996,7 @@ class TreeGenerator(Generator):
 
         
         for a in range (0, branch_num):
-            branch_height = randint(int(height/2)+4, height-1)
+            branch_height = randint(int((height-y0)/2+y0)+4, height-1)
             branch_pos = randint(1, 24)
             if branch_pos == 1:
                 branches.append([x0+3,branch_height,z0])
@@ -2250,7 +2250,7 @@ class TreeGenerator(Generator):
 
         
         for a in range (0, branch_num):
-            branch_height = randint(int(height/2)+5, height-1)
+            branch_height = randint(int((height-y0)/2+y0)+5, height-1)
             branch_pos = randint(1, 40)
             if branch_pos == 1:
                 branches.append([x0+5,branch_height,z0])
@@ -3131,7 +3131,7 @@ class TreeGenerator(Generator):
         small_branches = []
         #small side branches
         for a in range (0, branch_num):
-            branch_height = randint(int(height/2), height-5)
+            branch_height = randint(int((height-y0)/2+y0), height-5)
             branch_pos = randint(1, 16)
             if branch_pos == 1:
                 small_branches.append([x0+2,branch_height,z0])
@@ -3504,7 +3504,7 @@ class TreeGenerator(Generator):
         small_branches = []
         #small lower branches
         for a in range (0, branch_num):
-            branch_height = randint(int(height/2), height-7)
+            branch_height = randint(int((height-y0)/2+y0), height-7)
             branch_pos = randint(1, 24)
             if branch_pos == 1:
                 small_branches.append([x0+3,branch_height,z0])

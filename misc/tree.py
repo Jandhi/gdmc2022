@@ -1,7 +1,7 @@
 from house.grid import Grid
 from palette.block import Block
 from palette.material import BasicMaterial
-from palette.palette import Palette
+from palette.palette_old import Palette
 
 class Tree:
     palette: Palette
