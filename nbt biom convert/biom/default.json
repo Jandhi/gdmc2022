@@ -1,0 +1,22 @@
+{
+    "stone": "minecraft:stone_bricks",
+    "stone_accent": "minecraft:mossy_stone_bricks",
+    "wood": "minecraft:oak_planks",
+    "wood_accent": "minecraft:jungle_planks",
+    "floor": "minecraft:birch_planks",
+    "foundation": "minecraft:cobblestone",
+    "frame": "minecraft:oak_log",
+    "wall": "minecraft:white_concrete",
+    "wall_accent": "minecraft:white_terracotta",
+    "ceiling": "minecraft:bricks",
+    "ceiling_stair": "minecraft:brick_stairs",
+    "ceiling_accent": "minecraft:spruce_planks",
+    "ceiling_stair_accent": "minecraft:spruce_stairs",
+    "window": "minecraft:glass_pane",
+    "shutter": "minecraft:oak_trapdoor",
+    "window_sill": "minecraft:spruce_slab",
+    "supports": "minecraft:oak_fence",
+    "torch": "minecraft:wall_torch",
+    "light": "minecraft:glowstone",
+    "door": "minecraft:oak_door"
+}

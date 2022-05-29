@@ -1,0 +1,22 @@
+{
+    "stone": "minecraft:cut_sandstone",
+    "stone_accent": "minecraft:chiseled_sandstone",
+    "wood": "minecraft:cut_red_sandstone",
+    "wood_accent": "minecraft:chiseled_red_sandstone",
+    "floor": "minecraft:stone",
+    "foundation": "minecraft:sandstone",
+    "frame": "minecraft:polished_andesite",
+    "wall": "minecraft:yellow_concrete",
+    "wall_accent": "minecraft:red_terracotta",
+    "ceiling": "minecraft:dark_oak_planks",
+    "ceiling_stair": "minecraft:dark_oak_stairs",
+    "ceiling_accent": "minecraft:acacia_planks",
+    "ceiling_stair_accent": "minecraft:acacia_stairs",
+    "window": "minecraft:glass_pane",
+    "shutter": "minecraft:acacia_trapdoor",
+    "window_sill": "minecraft:smooth_sandstone_slab",
+    "supports": "minecraft:oak_fence",
+    "torch": "minecraft:wall_torch",
+    "light": "minecraft:glowstone",
+    "door": "minecraft:acacia_door"
+}
