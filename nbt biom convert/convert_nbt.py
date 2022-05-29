@@ -47,7 +47,7 @@ def get_properties(i):
         props = pal['Properties']
         for prop in props.tags:
             attr += f',{prop.name}={prop.value}'
-    return attr[1:]
+    return attr[1:] 
 
 def should_preserve_props(old_block, new_block):
     preserve_types = ["log", "stair", "trapdoor", "torch", "fence", "door"]
