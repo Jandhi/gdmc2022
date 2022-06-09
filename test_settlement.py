@@ -13,7 +13,7 @@ from terrain.buildmap import get_build_map
 from terrain.watermap import get_water_map
 from gdpc.direct_interface import runCommand
 
-area = list(requestPlayerArea(100, 100)) 
+area = list(requestPlayerArea(256, 256)) 
 area[1] = 3
 area[4] = 200
 origin = (area[0], area[1], area[2])
@@ -52,7 +52,6 @@ bbg = BubbleGenerator(
     bmap=bmap, 
     omap=omap,
     slice=slice,
-    point_amount=20,
     road_material=mixed_road,
     slab_material=mixed_slab,
 )

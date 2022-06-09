@@ -14,7 +14,7 @@ from noise.random import recursive_hash
 
 class BubbleGenerator(Generator):
     name = 'bubble generator'
-    point_amount = 20
+    point_density = 20 / (256 ** 2)
     bubble_colors = [
         'red_wool',
         'light_blue_wool',
@@ -53,6 +53,8 @@ class BubbleGenerator(Generator):
             wmap=self.wmap, 
             bmap=self.bmap
         )
+
+        self.point_amount = int(self.point_density * self.width * self.height)
 
     def __generate__(self, interface : Interface):
         self.bubble_map = [[None for z in range(self.depth)] for x in range(self.width)]
@@ -115,17 +117,55 @@ class BubbleGenerator(Generator):
         self.bubble_layout = BubbleLayout(self.bubbles)
 
         queue = start_points.copy()
+        leftover_queue = []
         visited = set()
 
         while len(queue) > 0:
             x, z = queue.pop(0)
             current_bubble_index = self.bubble_map[x][z]
 
-            for px, pz in neighbours_2d((x, z), self.hmap, self.wmap):
+            for px, pz in neighbours_2d((x, z)):
                 # bounds
                 if px < 0 or pz < 0 or px >= self.width or pz >= self.depth:
                     continue
-                
+
+                if (px, pz) in neighbours_2d((x, z), self.hmap, self.wmap):
+                    # is accessible
+                    if self.bubble_map[px][pz] != None:
+                        if self.bubble_map[px][pz] != current_bubble_index:
+                            # establish neighbours
+                            d1, d2 = self.bubbles[current_bubble_index], self.bubbles[self.bubble_map[px][pz]]
+                            self.bubble_layout.set_neighbours(d1, d2)
+
+                        # already claimed
+                        continue
+                    else:
+                        visited.add((px, pz))
+                        self.bubble_map[px][pz] = current_bubble_index
+                        self.bubbles[current_bubble_index].add_point((px, pz))
+                        queue.append((px, pz))
+                else:
+                    # not accessible
+                    visited.add((px, pz))
+                    self.bubble_map[px][pz] = current_bubble_index
+                    self.bubbles[current_bubble_index].add_point((px, pz))
+                    leftover_queue.append((px, pz))
+
+        '''
+        The leftover queue ensures that all tiles in the map are claimed by a district
+        However, they are only expanded into once all normal tiles are expanded into
+        The leftovers include holes, mountains, and water
+        This ensures our neighbour relationships make sense (e.g. a river may divide neighbouring districts)
+        '''
+        while len(leftover_queue) > 0:
+            x, z = leftover_queue.pop(0)
+            current_bubble_index = self.bubble_map[x][z]
+
+            for px, pz in neighbours_2d((x, z)):
+                # bounds
+                if px < 0 or pz < 0 or px >= self.width or pz >= self.depth:
+                    continue
+
                 if self.bubble_map[px][pz] != None:
                     if self.bubble_map[px][pz] != current_bubble_index:
                         # establish neighbours
@@ -134,11 +174,11 @@ class BubbleGenerator(Generator):
 
                     # already claimed
                     continue
-                else:
+                elif (px, pz) not in visited:
                     visited.add((px, pz))
                     self.bubble_map[px][pz] = current_bubble_index
                     self.bubbles[current_bubble_index].add_point((px, pz))
-                    queue.append((px, pz))
+                    leftover_queue.append((px, pz))
     
     def find_paths(self):
         def shift(point):
@@ -166,6 +206,9 @@ class BubbleGenerator(Generator):
 
         for i in range(len(points)):
             for j in range(i + 1, len(points)):
+                if not self.bubble_layout.are_neighbours_list[i][j] and distance_2d(points[i], points[j]) > 100:
+                    continue
+
                 print(f'Finding path from {i} to {j}')
                 generator.set_points(points[i], points[j])
                 path = generator.find_path()

@@ -10,6 +10,7 @@ from util.point_utils import three_by_three
 from vector import sum_vectors
 
 RED_POINTS = False
+MAXIMUM_VISITED = 100000
 
 def taxi_dist2(p1, p2):
     return abs(p2[0] - p1[0]) + abs(p2[1] - p1[1])
@@ -61,6 +62,10 @@ class HighwayGenerator(Generator):
 
         while len(queue) > 0:
             priority, path = heapq.heappop(queue)
+
+            if len(visited) > MAXIMUM_VISITED:
+                print('PATH FAILED! Took too long :(')
+                return
             
             if path[-1] == (self.x2, self.y2, self.z2):
                 for px, py, pz in path:
